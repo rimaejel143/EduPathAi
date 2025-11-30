@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Settings</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary-blue-dark: #1b3a5e;
+        --accent-yellow: #fdc80a;
+        --primary-blue-light: #4e7ea7;
+      }
+      .text-warning {
+        color: var(--accent-yellow) !important;
+      }
+      .admin-navbar {
+        background-color: var(--primary-blue-dark);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .admin-navbar .navbar-brand {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+      }
+      .sidebar {
+        width: 250px;
+        min-width: 250px;
+        background-color: #f8f9fa;
+        border-right: 1px solid #ddd;
+        padding-top: 20px;
+      }
+      .sidebar .nav-link {
+        color: var(--primary-blue-dark);
+      }
+      .sidebar .nav-item.active-settings .nav-link {
+        background-color: #e9ecef;
+        border-left: 3px solid var(--accent-yellow);
+        font-weight: bold;
+      }
+      .main-content {
+        flex-grow: 1;
+        overflow-y: auto;
+        background-color: #fff;
+      }
+      .setting-card {
+        border: none;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      }
+      .save-settings-btn {
+        background-color: var(--primary-blue-dark);
+        color: white;
+        padding: 10px 30px;
+        font-size: 1.1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark admin-navbar">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <h5 class="d-inline-block fw-bold mb-0">
+            <span class="text-white">Edu</span>
+            <span class="text-warning">PathAI</span>
+          </h5>
+        </a>
+      </div>
+    </nav>
+
+    <div class="d-flex admin-layout">
+      <div class="sidebar">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="admin_dashboard.html">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="questions_weights.html"
+              >Questions & Weights</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="user_reports.html">User Reports</a>
+          </li>
+          <li class="nav-item active-settings">
+            <a class="nav-link" href="settings.html">Settings</a>
+          </li>
+        </ul>
+      </div>
+
+      <main class="main-content p-4">
+        <div class="container-fluid">
+          <h2 class="mb-4">System Settings & Configuration</h2>
+
+          <div class="row">
+            <!-- LEFT CARD -->
+            <div class="col-md-6 mb-4">
+              <div class="card setting-card p-4">
+                <h4 class="mb-3 text-primary">System Variables</h4>
+
+                <div class="mb-3">
+                  <label class="form-label">Website Name</label>
+                  <input type="text" class="form-control" id="site_name" />
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Theme Color</label>
+                  <input
+                    type="color"
+                    class="form-control form-control-color"
+                    id="theme_color"
+                  />
+                </div>
+
+                <div class="mb-3 form-check">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="allow_ai"
+                  />
+                  <label class="form-check-label" for="allow_ai">
+                    Enable AI Predictions
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT CARD -->
+            <div class="col-md-6 mb-4">
+              <div class="card setting-card p-4">
+                <h4 class="mb-3 text-success">Admin Profile</h4>
+
+                <div class="mb-3">
+                  <label class="form-label">Admin Email</label>
+                  <input type="email" class="form-control" id="admin_email" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center mt-4">
+            <button class="btn save-settings-btn" onclick="saveSettings()">
+              Save Settings
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      // Load settings on page load
+      fetch("http://localhost/SeniorEducation/php/admin/get_settings.php")
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            let s = data.settings;
+            document.getElementById("site_name").value = s.site_name;
+            document.getElementById("admin_email").value = s.admin_email;
+            document.getElementById("theme_color").value = s.theme_color;
+            document.getElementById("allow_ai").checked =
+              s.allow_ai_predictions == 1;
+          }
+        });
+
+      function saveSettings() {
+        let payload = {
+          site_name: document.getElementById("site_name").value,
+          admin_email: document.getElementById("admin_email").value,
+          theme_color: document.getElementById("theme_color").value,
+          allow_ai_predictions: document.getElementById("allow_ai").checked
+            ? 1
+            : 0,
+        };
+
+        fetch(
+          "http://localhost/SeniorEducation/php/admin/update_settings.php",
+          {
+            method: "POST",
+            body: JSON.stringify(payload),
+          }
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            alert(data.message);
+          });
+      }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

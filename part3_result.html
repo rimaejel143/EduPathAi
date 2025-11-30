@@ -1,0 +1,195 @@
+<!-- part3_result.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Part 3 Results</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary-blue: #3b72a0;
+        --yellow: #fdc80a;
+        --light-gray: #eef1f4;
+      }
+
+      body {
+        background-color: rgba(0, 0, 0, 0.4);
+        font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue",
+          Arial, sans-serif;
+      }
+
+      .result-modal {
+        max-width: 650px;
+        margin: 60px auto;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        animation: fadeIn 0.36s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .modal-header {
+        background-color: var(--primary-blue);
+        padding: 18px 25px;
+        color: white;
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .close-btn {
+        color: white;
+        font-size: 26px;
+        cursor: pointer;
+      }
+
+      .modal-body {
+        padding: 35px 40px;
+      }
+
+      .result-item {
+        margin-bottom: 28px;
+      }
+
+      .trait-label {
+        font-size: 17px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      .percent-label {
+        position: absolute;
+        right: 0;
+        top: -5px;
+        font-size: 16px;
+        color: #000;
+      }
+
+      .bar {
+        height: 18px;
+        background: var(--light-gray);
+        border-radius: 10px;
+        margin-bottom: 10px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .bar-fill {
+        height: 18px;
+        background: var(--yellow);
+        border-radius: 10px;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+
+      #next-btn,
+      .btn-primary {
+        background: var(--yellow) !important;
+        color: #333 !important;
+        font-weight: bold;
+        border-radius: 50px;
+        padding: 10px 28px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="result-modal">
+      <div
+        class="modal-header d-flex justify-content-between align-items-center"
+      >
+        <span>Part 3 Results: Academic Abilities</span>
+        <span class="close-btn" onclick="window.location.href='part3.html'"
+          >&times;</span
+        >
+      </div>
+
+      <div class="modal-body">
+        <p class="text-center mb-4 fw-bold" style="font-size: 20px">
+          Your results for Part 3:
+        </p>
+
+        <!-- KEEP THIS EXACT ID: JS will populate results here -->
+        <div id="results-container"></div>
+
+        <div class="text-center mt-4">
+          <button
+            class="btn btn-primary px-4"
+            onclick="location.href='final_result.html'"
+          >
+            Show Final Recommendation →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        const res = await fetch("php/assessment/part_result.php?part=3");
+        const data = await res.json();
+
+        const cont = document.getElementById("results-container");
+
+        if (!data.success) {
+          cont.innerHTML = "<p>Error loading results.</p>";
+          return;
+        }
+
+        const traits = data.traits;
+
+        // Define per-category maxes (must match server mapping)
+        const categoryMax = {
+          "Analytical Ability": 15,
+          "Communication Ability": 10,
+          "Creative Ability": 10,
+        };
+
+        let html = "";
+
+        // Ensure categories display in desired order
+        const order = [
+          "Analytical Ability",
+          "Communication Ability",
+          "Creative Ability",
+        ];
+
+        order.forEach((cat) => {
+          const score = traits[cat] ?? 0;
+          const max = categoryMax[cat] || 10;
+          const percent = Math.round((score / max) * 100);
+
+          html += `
+  <div class="mb-4 position-relative">
+      <strong>${cat}</strong>
+
+      <div class="percent-label">${percent}%</div>
+
+      <div class="bar">
+        <div class="bar-fill" style="width:${percent}%;"></div>
+      </div>
+  </div>
+`;
+        });
+
+        cont.innerHTML = html;
+      });
+    </script>
+  </body>
+</html>

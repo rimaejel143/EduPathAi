@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduPathAI - Contact Us</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+      :root {
+        --primary-color: #002b5b;
+        --accent-color: #ffc107;
+        --text-light: #ffffff;
+        --bg-light: #f8f9fa;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: var(--bg-light);
+      }
+
+      /* ===== Navbar ===== */
+      .custom-nav {
+        background-color: var(--primary-color) !important;
+      }
+
+      .navbar-brand .text-warning {
+        color: var(--accent-color) !important;
+      }
+
+      .nav-link {
+        color: white !important;
+        font-weight: 500;
+      }
+
+      .nav-link:hover,
+      .nav-link.active {
+        color: var(--accent-color) !important;
+      }
+
+      /* ===== Hero ===== */
+      .contact-hero {
+        background: linear-gradient(rgba(0, 43, 91, 0.9), rgba(0, 43, 91, 0.8));
+        padding: 100px 0 80px; /* قللنا الـ padding عشان ما نحتاج negative margin */
+        text-align: center;
+        color: white;
+        position: relative;
+      }
+
+      /* إذا بدك تستخدم صورة خلفية */
+      /*
+      .contact-hero {
+        background: linear-gradient(rgba(0, 43, 91, 0.8), rgba(0, 43, 91, 0.8)),
+          url("imgs/contact-bg.jpg") no-repeat center center;
+        background-size: cover;
+        padding: 100px 0 80px;
+        text-align: center;
+        color: white;
+        position: relative;
+      }
+      */
+
+      .contact-hero h1 {
+        font-weight: 800;
+        font-size: 2.8rem;
+        margin-bottom: 1rem;
+      }
+
+      .contact-hero p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+      }
+
+      /* ===== Contact Section ===== */
+      .contact-section {
+        margin-top: 0; /* إزالة أي margin سلبي */
+        padding: 2rem 0;
+      }
+
+      .contact-section h3 {
+        color: var(--primary-color);
+        font-weight: 700;
+        margin-bottom: 2rem;
+      }
+
+      .contact-form {
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 2.5rem;
+        /* إزالة الـ margin-top السالب والـ position */
+        border: 1px solid #e9ecef;
+      }
+
+      .contact-form label {
+        color: var(--primary-color);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .contact-form input,
+      .contact-form textarea,
+      .contact-form select {
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        padding: 0.75rem;
+        transition: all 0.3s ease;
+      }
+
+      .contact-form input:focus,
+      .contact-form textarea:focus,
+      .contact-form select:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+      }
+
+      .contact-form button {
+        background-color: var(--accent-color);
+        border: none;
+        color: #000;
+        font-weight: bold;
+        border-radius: 8px;
+        padding: 0.75rem 2rem;
+        transition: all 0.3s ease;
+        width: 100%;
+      }
+
+      .contact-form button:hover:not(:disabled) {
+        background-color: #e0a800;
+        transform: translateY(-2px);
+      }
+
+      .contact-form button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      /* Contact Info Cards */
+      .contact-info-card {
+        background: white;
+        border-radius: 10px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease;
+        height: 100%;
+        border: 1px solid #f8f9fa;
+        margin-bottom: 2rem;
+      }
+
+      .contact-info-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .contact-info-card i {
+        font-size: 2.5rem;
+        color: var(--accent-color);
+        margin-bottom: 1rem;
+      }
+
+      .contact-info-card h5 {
+        color: var(--primary-color);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      /* Success Message */
+      .alert-success {
+        border-radius: 10px;
+        border: none;
+        background: linear-gradient(135deg, #d4edda, #c3e6cb);
+        border: 1px solid #c3e6cb;
+      }
+
+      footer {
+        padding: 20px;
+        text-align: center;
+        background-color: #cde6f7;
+        font-size: 0.9rem;
+        color: #000000;
+        margin-top: 4rem;
+        border-top: 1px solid #b8d4f0;
+      }
+
+      /* تحسينات للشاشات الصغيرة */
+      @media (max-width: 768px) {
+        .contact-hero {
+          padding: 80px 0 60px;
+        }
+
+        .contact-hero h1 {
+          font-size: 2.2rem;
+        }
+
+        .contact-form {
+          padding: 2rem 1.5rem;
+        }
+
+        .contact-info-card {
+          margin-bottom: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar Placeholder -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- Hero Section -->
+    <section class="contact-hero">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <h1>Contact Our Project Team</h1>
+            <p>
+              We'd love to hear your feedback and answer any questions about
+              EduPathAI
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Content -->
+    <div class="container contact-section">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <!-- Contact Info Cards -->
+          <div class="row">
+            <div class="col-md-4">
+              <div class="contact-info-card">
+                <i class="fas fa-envelope"></i>
+                <h5>Email Us</h5>
+                <p class="text-muted">contact@edupathai.com</p>
+                <small>We'll respond within 24 hours</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="contact-info-card">
+                <i class="fas fa-map-marker-alt"></i>
+                <h5>Visit Us</h5>
+                <p class="text-muted">Lebanese International University</p>
+                <small>Senior Project Team</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="contact-info-card">
+                <i class="fas fa-clock"></i>
+                <h5>Response Time</h5>
+                <p class="text-muted">24-48 Hours</p>
+                <small>During business days</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Form -->
+          <div class="row mt-4">
+            <div class="col-lg-8 mx-auto">
+              <div class="contact-form">
+                <h3 class="text-center mb-4">Send Us a Message</h3>
+
+                <!-- Success Message (Hidden by default) -->
+                <div id="success-alert" class="alert alert-success d-none">
+                  <i class="fas fa-check-circle me-2"></i>
+                  <strong>Thank you!</strong> Your message has been sent
+                  successfully. We'll get back to you soon.
+                </div>
+
+                <form id="contact-form">
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="name" class="form-label">Full Name *</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="name"
+                        required
+                        placeholder="Enter your full name"
+                      />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="email" class="form-label"
+                        >Email Address *</label
+                      >
+                      <input
+                        type="email"
+                        class="form-control"
+                        id="email"
+                        required
+                        placeholder="Enter your email"
+                      />
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="subject" class="form-label">Subject</label>
+                    <select class="form-control" id="subject">
+                      <option value="">Select a subject</option>
+                      <option value="feedback">Feedback</option>
+                      <option value="technical-issue">Technical Issue</option>
+                      <option value="partnership">Partnership</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  <div class="mb-4">
+                    <label for="message" class="form-label">Message *</label>
+                    <textarea
+                      class="form-control"
+                      id="message"
+                      rows="5"
+                      required
+                      placeholder="Tell us about your inquiry..."
+                    ></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-warning" id="submit-btn">
+                    <i class="fas fa-paper-plane me-2"></i>
+                    Send Message
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>&copy; 2025 EduPathAI. All Rights Reserved.</footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // تحميل ال navbar
+      fetch("navbar.html")
+        .then((res) => {
+          if (!res.ok) throw new Error("Network response was not ok");
+          return res.text();
+        })
+        .then((data) => {
+          document.getElementById("navbar-placeholder").innerHTML = data;
+          const currentPage = window.location.pathname.split("/").pop();
+          document.querySelectorAll(".nav-link").forEach((link) => {
+            if (link.getAttribute("href") === currentPage) {
+              link.classList.add("active");
+            }
+          });
+        })
+        .catch((error) => {
+          console.error("Error loading navbar:", error);
+          // navbar بديل في حالة الخطأ
+          document.getElementById("navbar-placeholder").innerHTML = `
+            <nav class="navbar navbar-expand-lg navbar-dark custom-nav">
+              <div class="container">
+                <a class="navbar-brand" href="index.html">
+                  <i class="fas fa-brain me-2"></i>
+                  <span class="text-white">Edu</span><span class="text-warning">PathAI</span>
+                </a>
+              </div>
+            </nav>
+          `;
+        });
+
+      // معالجة نموذج الاتصال
+      document
+        .getElementById("contact-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const submitBtn = document.getElementById("submit-btn");
+          const successAlert = document.getElementById("success-alert");
+          const form = e.target;
+
+          // تعطيل الزر أثناء الإرسال
+          submitBtn.disabled = true;
+          submitBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+
+          // محاكاة إرسال النموذج
+          setTimeout(() => {
+            // إظهار رسالة النجاح
+            successAlert.classList.remove("d-none");
+            form.reset();
+
+            // إعادة تعيين الزر
+            submitBtn.disabled = false;
+            submitBtn.innerHTML =
+              '<i class="fas fa-paper-plane me-2"></i>Send Message';
+
+            // إخفاء رسالة النجاح بعد 5 ثواني
+            setTimeout(() => {
+              successAlert.classList.add("d-none");
+            }, 5000);
+
+            // تسجيل البيانات (في التطبيق الحقيقي، أرسلها للخادم)
+            console.log("Form data:", {
+              name: document.getElementById("name").value,
+              email: document.getElementById("email").value,
+              subject: document.getElementById("subject").value,
+              message: document.getElementById("message").value,
+            });
+          }, 1500);
+        });
+
+      // تحقق من الحقول في الوقت الحقيقي
+      const inputs = document.querySelectorAll(
+        "#contact-form input, #contact-form textarea, #contact-form select"
+      );
+      inputs.forEach((input) => {
+        input.addEventListener("input", function () {
+          if (this.checkValidity()) {
+            this.classList.remove("is-invalid");
+            this.classList.add("is-valid");
+          } else {
+            this.classList.remove("is-valid");
+            this.classList.add("is-invalid");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

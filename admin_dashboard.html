@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel - EduPathAI</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <style>
+      :root {
+        --primary-blue-dark: #1b3a5e;
+        --primary-blue-light: #4e7ea7;
+        --accent-yellow: #fdc80a;
+        --text-color: #333;
+      }
+
+      .text-warning {
+        --bs-text-opacity: 1;
+        color: var(--accent-yellow) !important;
+      }
+
+      .admin-navbar {
+        background-color: var(--primary-blue-dark);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .admin-navbar .navbar-brand {
+        display: flex;
+        align-items-center;
+        text-decoration: none;
+      }
+
+      .admin-navbar .navbar-brand .logo-icon {
+        color: var(--accent-yellow) !important;
+      }
+
+      .admin-layout {
+        height: calc(100vh - 56px);
+      }
+
+      .sidebar {
+        width: 250px;
+        min-width: 250px;
+        background-color: #f8f9fa;
+        border-right: 1px solid #ddd;
+        padding-top: 20px;
+      }
+      .sidebar .nav-link {
+        color: var(--primary-blue-dark);
+        padding: 10px 15px;
+        border-left: 3px solid transparent;
+      }
+      .sidebar .nav-link:hover {
+        color: var(--primary-blue-light);
+        background-color: #e9ecef;
+      }
+      .sidebar .nav-item.active .nav-link {
+        color: var(--primary-blue-dark);
+        background-color: #e9ecef;
+        border-left-color: var(--accent-yellow);
+        font-weight: bold;
+      }
+
+      .main-content {
+        flex-grow: 1;
+        overflow-y: auto;
+        background-color: #fff;
+      }
+
+      .kpi-card {
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        height: 100%;
+      }
+      .kpi-icon {
+        float: right;
+        font-size: 2rem;
+        color: var(--primary-blue-light);
+        opacity: 0.6;
+      }
+      .kpi-card .card-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary-blue-dark);
+      }
+
+      .chart-card {
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .pie-chart-mock {
+        height: 250px;
+        background-color: #eee;
+        border-radius: 50%;
+        width: 250px;
+        margin: 0 auto;
+        background-image: conic-gradient(
+          #3f51b5 0deg 25%,
+          #8bc34a 25% 43%,
+          #ffeb3b 43% 58%,
+          #9e9e9e 58% 72%,
+          #673ab7 72% 85%,
+          #ff9800 85% 95%
+        );
+        border: 5px solid #fff;
+      }
+
+      .legend-item {
+        line-height: 2.2;
+        font-size: 1rem;
+        color: var(--text-color);
+      }
+      .legend-dot {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+
+      .legend-dot.blue { background-color: #3f51b5; }
+      .legend-dot.green { background-color: #8bc34a; }
+      .legend-dot.yellow { background-color: #ffeb3b; }
+      .legend-dot.gray { background-color: #9e9e9e; }
+      .legend-dot.purple { background-color: #673ab7; }
+      .legend-dot.orange { background-color: #ff9800; }
+
+      .admin-table th {
+        background-color: #f1f1f1;
+        color: var(--primary-blue-dark);
+        font-weight: 600;
+      }
+      .view-report-btn {
+        background-color: var(--primary-blue-dark);
+        color: white;
+        border: none;
+        transition: background-color 0.3s;
+      }
+      .view-report-btn:hover {
+        background-color: var(--primary-blue-light);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark admin-navbar">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">
+          <i class="fas fa-brain me-2 fs-4 logo-icon"></i>
+          <h5 class="d-inline-block fw-bold mb-0">
+            <span class="text-white">Edu</span>
+            <span class="text-warning">PathAI</span>
+          </h5>
+        </a>
+
+        <div class="d-flex align-items-center">
+          <span class="navbar-text me-3 text-white">Admin Panel</span>
+          <i class="fas fa-user-circle fs-4 text-white me-2"></i>
+          <a
+            class="btn btn-sm btn-outline-light"
+            href="index.html"
+            onclick="logout()"
+            >Logout</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <div class="d-flex admin-layout">
+      <div class="sidebar">
+        <ul class="nav flex-column">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">
+              <i class="fas fa-home me-2"></i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="questions_weights.html">
+              <i class="fas fa-question-circle me-2"></i> Questions & Weights
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="user_reports.html">
+              <i class="fas fa-chart-bar me-2"></i> User Reports
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="settings.html">
+              <i class="fas fa-cog me-2"></i> Settings
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <main class="main-content p-4">
+        <div class="container-fluid">
+          <!-- KPI Cards -->
+          <div class="row mb-4 kpi-cards-row">
+            <div class="col-md-3">
+              <div class="card kpi-card">
+                <div class="card-body">
+                  <i class="fas fa-users kpi-icon"></i>
+                  <h6 class="card-subtitle mb-2 text-muted">Total Users</h6>
+                  <h3 class="card-title" id="total-users">0</h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card kpi-card">
+                <div class="card-body">
+                  <i class="fas fa-check-circle kpi-icon"></i>
+                  <h6 class="card-subtitle mb-2 text-muted">Completed Tests</h6>
+                  <h3 class="card-title" id="completed-tests">0</h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card kpi-card">
+                <div class="card-body">
+                  <i class="fas fa-percent kpi-icon"></i>
+                  <h6 class="card-subtitle mb-2 text-muted">Average Score</h6>
+                  <h3 class="card-title" id="average-score">0%</h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card kpi-card">
+                <div class="card-body">
+                  <i class="fas fa-plus-circle kpi-icon"></i>
+                  <h6 class="card-subtitle mb-2 text-muted">
+                    New Users This Week
+                  </h6>
+                  <h3 class="card-title" id="new-users">0</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart Section -->
+          <div class="card chart-card mb-4">
+            <div class="card-body">
+              <h4 class="card-title mb-4">
+                Student Major Interest Distribution
+              </h4>
+              <div class="row">
+                <div
+                  class="col-md-5 d-flex align-items-center justify-content-center"
+                >
+                  <div class="pie-chart-mock"></div>
+                </div>
+                <div class="col-md-7 legend-container">
+                  <ul class="list-unstyled" id="major-distribution">
+                    <!-- سيتم تعبئته بالجافاسكريبت -->
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Tests Table -->
+          <div class="card table-card">
+            <div class="card-body">
+              <h4 class="card-title mb-3">Recent Test Completions</h4>
+              <div class="table-responsive">
+                <table class="table table-striped table-sm admin-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Completion Date</th>
+                      <th>Best Match</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recent-tests-body">
+                    <!-- سيتم تعبئته بالجافاسكريبت -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // دالة للتحقق من صلاحية الجلسة
+      function checkAdminSession() {
+        const userType = localStorage.getItem("user_type");
+        if (userType !== "admin") {
+          window.location.href = "index.html";
+          return false;
+        }
+        return true;
+      }
+
+      // دالة تسجيل الخروج
+      function logout() {
+        localStorage.clear();
+        sessionStorage.clear();
+      }
+
+      // تحميل البيانات من API
+      async function loadDashboardData() {
+        if (!checkAdminSession()) return;
+
+        try {
+          // محاكاة جلب البيانات من API
+          const mockData = {
+            totalUsers: 567,
+            completedTests: 420,
+            averageScore: 78,
+            newUsers: 35,
+            majorDistribution: [
+              { major: "Computer Science", percentage: 25 },
+              { major: "Medicine", percentage: 18 },
+              { major: "Business", percentage: 15 },
+              { major: "Engineering", percentage: 14 },
+              { major: "Law", percentage: 13 },
+              { major: "Arts & Design", percentage: 10 },
+            ],
+            recentTests: [
+              {
+                name: "Ali Hassan",
+                email: "ali.h@example.com",
+                date: "2024-01-15",
+                major: "Computer Science",
+              },
+              {
+                name: "Lama Saqr",
+                email: "lama.s@example.com",
+                date: "2024-01-14",
+                major: "Medicine",
+              },
+              {
+                name: "Rami Abboud",
+                email: "rami.a@example.com",
+                date: "2024-01-13",
+                major: "Business",
+              },
+            ],
+          };
+
+          // تحديث KPI Cards
+          document.getElementById("total-users").textContent =
+            mockData.totalUsers;
+          document.getElementById("completed-tests").textContent =
+            mockData.completedTests;
+          document.getElementById("average-score").textContent =
+            mockData.averageScore + "%";
+          document.getElementById("new-users").textContent = mockData.newUsers;
+
+          // تحديث توزيع التخصصات
+          const distributionList =
+            document.getElementById("major-distribution");
+          distributionList.innerHTML = mockData.majorDistribution
+            .map(
+              (item) => `
+            <li class="legend-item">
+              <span class="legend-dot ${getColorClass(item.major)}"></span> 
+              ${item.major}
+              <span class="float-end fw-bold">${item.percentage}%</span>
+            </li>
+          `
+            )
+            .join("");
+
+          // تحديث الجدول
+          const tableBody = document.getElementById("recent-tests-body");
+          tableBody.innerHTML = mockData.recentTests
+            .map(
+              (test) => `
+            <tr>
+              <td>${test.name}</td>
+              <td>${test.email}</td>
+              <td>${test.date}</td>
+              <td>${test.major}</td>
+              <td>
+                <button class="btn btn-sm view-report-btn" onclick="viewReport('${test.email}')">
+                  View Report
+                </button>
+              </td>
+            </tr>
+          `
+            )
+            .join("");
+        } catch (error) {
+          console.error("Error loading dashboard data:", error);
+        }
+      }
+
+      // دالة مساعدة للحصول على لون التخصص
+      function getColorClass(major) {
+        const colors = {
+          "Computer Science": "blue",
+          Medicine: "green",
+          Business: "yellow",
+          Engineering: "gray",
+          Law: "purple",
+          "Arts & Design": "orange",
+        };
+        return colors[major] || "blue";
+      }
+
+      // دالة عرض التقرير
+      function viewReport(email) {
+        alert(
+          `Viewing report for: ${email}\n\nIn a real application, this would open a detailed report.`
+        );
+        // window.location.href = `user_report.html?email=${encodeURIComponent(email)}`;
+      }
+
+      // تحميل البيانات عند فتح الصفحة
+      document.addEventListener("DOMContentLoaded", loadDashboardData);
+    </script>
+  </body>
+</html>

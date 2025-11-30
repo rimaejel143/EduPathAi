@@ -1,0 +1,54 @@
+/* ===== Background Section ===== */
+body {
+  background: url("imgs/Background.png") no-repeat center center fixed;
+  background-size: cover;
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== Card (Login Box) ===== */
+.login-card {
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 20px;
+  width: 350px;
+}
+
+/* ===== Form Controls ===== */
+.form-control {
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+}
+
+/* ===== Button ===== */
+.btn-primary {
+  background-color: #2f7df6;
+  border: none;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #559bff;
+}
+
+/* ===== Text Links ===== */
+a {
+  color: #2f7df6;
+}
+
+a:hover {
+  color: #559bff;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .login-card {
+    width: 90%;
+  }
+}

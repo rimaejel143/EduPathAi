@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduPathAI</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
+
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #4e7ea7;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Navbar */
+      .navbar {
+        background-color: #4e7ea7;
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+      }
+
+      .navbar-nav .nav-item {
+        margin-left: 25px;
+      }
+
+      .nav-item .nav-link {
+        color: white;
+        transition: color 0.3s ease;
+      }
+
+      .nav-item .nav-link:hover {
+        color: #fdc80a;
+      }
+
+      .btn-start,
+      .btn-warning {
+        background-color: #fdc80a;
+        color: white;
+        font-weight: 500;
+        border: none;
+        transition: background 0.3s ease;
+      }
+
+      .btn-start:hover,
+      .btn-warning:hover {
+        background-color: #ff7b1a;
+        color: white;
+      }
+
+      /* Hero Section */
+      .hero {
+        position: relative;
+        width: 100%;
+        height: 60vh;
+        overflow: hidden;
+      }
+
+      .hero img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .hero .hero-content {
+        position: absolute;
+        top: 25%;
+        left: 8%;
+        color: white;
+      }
+
+      .hero h1 {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+
+      .hero h2 {
+        font-size: 1.5rem;
+        font-weight: 500;
+        margin-bottom: 15px;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 992px) {
+        .hero {
+          height: 50vh;
+        }
+
+        .hero .hero-content {
+          top: 20%;
+          left: 6%;
+        }
+
+        .hero h1 {
+          font-size: 1.6rem;
+        }
+
+        .hero h2 {
+          font-size: 1.2rem;
+        }
+
+        .hero a {
+          font-size: 0.9rem;
+          padding: 8px 16px;
+        }
+
+        .navbar-nav .nav-item {
+          margin-left: 10px;
+        }
+      }
+
+      /* How It Works */
+      .how-it-works {
+        padding: 30px 15px;
+        text-align: center;
+        background-color: #4e7ea7;
+      }
+
+      .how-it-works h2 {
+        font-weight: 700;
+        margin-bottom: 40px;
+      }
+
+      .step-card {
+        background-color: #ffffff;
+        padding: 25px 15px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+      }
+
+      .step-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .step-card i {
+        font-size: 2rem;
+        color: #4f7ca3;
+        margin-bottom: 10px;
+      }
+
+      .step-card h5 {
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+      .custom-card {
+        border: none;
+        border-radius: 12px;
+        background-color: white; /* يجب أن تكون خلفية الكارت بيضاء */
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      /* تأثير التحويم (Hover Effect) */
+      .custom-card:hover {
+        transform: translateY(-8px); /* رفع الكارت للأعلى قليلاً */
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15) !important; /* ظل أوضح */
+      }
+      /* لون الأيقونات (البرتقالي) */
+      .custom-card i {
+        color: var(--accent-color); /* البرتقالي */
+      }
+
+      footer {
+        padding: 20px;
+        text-align: center;
+        background-color: #cde6f7;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- navbar -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <img src="imgs/Background.png" alt="Hero Image" />
+      <div class="hero-content">
+        <h1>Discover Your University Major Path</h1>
+        <h2>With Confidence & Intelligence</h2>
+        <a href="sign_in.html" class="btn btn-start rounded-pill"
+          >Start Guidance Test Now</a
+        >
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="container py-5 text-center" id="how-it-works">
+      <h2>How It Works</h2>
+      <div class="row g-4 justify-content-center">
+        <div class="col-md-4">
+          <div class="step-card">
+            <i class="bi bi-pencil-square"></i>
+            <h5>1. Test</h5>
+            <p>Answer Our Questions.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="step-card">
+            <i class="fas fa-brain"></i>
+            <h5>2. AI Analytic</h5>
+            <p>Our AI Analyzes Your Answers.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="step-card">
+            <i class="bi bi-mortarboard"></i>
+            <h5>3. Result</h5>
+            <p>Get Your Personalized Career Path.</p>
+          </div>
+        </div>
+      </div>
+      <p class="mt-4">Over 5000 students guided</p>
+    </section>
+
+    <footer>&copy; 2025 EduPathAI. All Rights Reserved.</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // تحميل النافبار من ملف خارجي
+      fetch("navbar.html")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("navbar-placeholder").innerHTML = data;
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Part 2 Results - Interests & Skills</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-blue: #3b72a0;
+        --yellow: #fdc80a;
+        --light-gray: #eef1f4;
+      }
+
+      body {
+        background-color: rgba(0, 0, 0, 0.4);
+        font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue",
+          Arial, sans-serif;
+      }
+
+      .result-modal {
+        max-width: 650px;
+        margin: 60px auto;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        animation: fadeIn 0.36s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .modal-header {
+        background-color: var(--primary-blue);
+        padding: 18px 25px;
+        color: white;
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .close-btn {
+        color: white;
+        font-size: 26px;
+        cursor: pointer;
+      }
+
+      .modal-body {
+        padding: 35px 40px;
+      }
+
+      .result-item {
+        margin-bottom: 28px;
+      }
+
+      .trait-label {
+        font-size: 17px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      .percent-label {
+        font-weight: bold;
+        color: var(--primary-blue);
+        font-size: 17px;
+      }
+
+      .progress {
+        height: 18px;
+        background: var(--light-gray);
+        border-radius: 10px;
+      }
+
+      .progress-bar {
+        background: var(--yellow);
+      }
+
+      /* style the existing button id without renaming */
+      #next-part-btn {
+        background: var(--yellow);
+        border-radius: 50px;
+        padding: 12px 35px;
+        font-size: 18px;
+        font-weight: bold;
+        margin: 20px auto 35px auto;
+        display: block;
+        border: none;
+        color: #333;
+        transition: 0.25s;
+      }
+
+      #next-part-btn:hover {
+        background: #ffcf30;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="result-modal">
+      <div
+        class="modal-header d-flex justify-content-between align-items-center"
+      >
+        <span>Part 2 Results: Interests & Skills</span>
+        <span class="close-btn" onclick="window.location.href='part2.html'"
+          >&times;</span
+        >
+      </div>
+
+      <div class="modal-body text-center">
+        <p class="text-center mb-4 fw-bold" style="font-size: 20px">
+          Your results for Part 2:
+        </p>
+
+        <!-- KEEP THIS EXACT ID: JS will populate results here -->
+        <div id="results-container"></div>
+
+        <p class="mt-4" id="result-summary"></p>
+
+        <!-- KEEP THIS ID: navigation button retained -->
+        <button id="next-part-btn" onclick="window.location.href='part3.html'">
+          Continue to Part 3 →
+        </button>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        const container = document.getElementById("results-container");
+        const summary = document.getElementById("result-summary");
+
+        try {
+          const response = await fetch(
+            "http://localhost/SeniorEducation/php/assessment/part_result.php?part=2"
+          );
+          const data = await response.json();
+
+          if (!data.success) {
+            container.innerHTML = "<p>Error: " + data.message + "</p>";
+            return;
+          }
+
+          const traits = data.traits || {};
+
+          // Use the exact display labels as keys to read scores from data.traits
+          const order = [
+            "Work-Life Balance",
+            "Time Management",
+            "Decision Making",
+            "Technical Skills",
+          ];
+
+          const maxScoreGlobal = data.max_score || 100;
+
+          let html = "";
+
+          // Read scores by the display labels; if backend uses different keys,
+          // fall back to commonly-used backend keys in the same order.
+          const fallbackBackendKeys = [
+            "Communication",
+            "Attention to Detail",
+            "Stress Management",
+            "Leadership",
+          ];
+
+          order.forEach((label, idx) => {
+            let score = null;
+            // 1) try exact display label key
+            if (Object.prototype.hasOwnProperty.call(traits, label)) {
+              score = traits[label];
+            }
+            // 2) fall back to known backend key at same index
+            if (score === null || score === undefined) {
+              const alt = fallbackBackendKeys[idx];
+              if (Object.prototype.hasOwnProperty.call(traits, alt)) {
+                score = traits[alt];
+              }
+            }
+            // 3) final fallback to 0
+            if (score === null || score === undefined) score = 0;
+
+            const percent = Math.min(
+              100,
+              Math.round((score / maxScoreGlobal) * 100)
+            );
+
+            html += `
+                <div class="text-start mb-4">
+                    <div class="d-flex justify-content-between">
+                        <strong>${label}</strong>
+                        <span>${percent}%</span>
+                    </div>
+                    <div class="progress">
+                        <div
+                            class="progress-bar"
+                            role="progressbar"
+                            style="width: ${percent}%"
+                            aria-valuenow="${percent}"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                        ></div>
+                    </div>
+                </div>
+            `;
+          });
+
+          container.innerHTML = html;
+
+          // Determine the top trait from the enforced order
+          let top = null;
+          order.forEach((t) => {
+            const s = traits[t] ?? 0;
+            if (!top || s > top[1]) top = [t, s];
+          });
+
+          if (top) {
+            summary.innerHTML = `Your strongest interest area is <strong>${top[0]}</strong>, showing strong potential in this domain.`;
+          } else {
+            summary.innerHTML = "";
+          }
+        } catch (e) {
+          container.innerHTML = "<p>Error connecting to server.</p>";
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Questions & Weights</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <style>
+      /* (هنا يجب نسخ ولصق كامل كود CSS من الملف السابق admin_dashboard_full.html/style) */
+      /* لتبسيط الكود، سأضع التنسيقات الأساسية الخاصة بالشعار والقائمة هنا، ويجب عليك نسخ البقية */
+      :root {
+        --primary-blue-dark: #1b3a5e;
+        --accent-yellow: #fdc80a;
+        --primary-blue-light: #4e7ea7;
+      }
+      .admin-navbar {
+        background-color: var(--primary-blue-dark);
+      }
+      .admin-layout {
+        height: calc(100vh - 56px);
+      }
+      .sidebar {
+        width: 250px;
+        min-width: 250px;
+        background-color: #f8f9fa;
+        border-right: 1px solid #ddd;
+        padding-top: 20px;
+      }
+      .sidebar .nav-link {
+        color: var(--primary-blue-dark);
+        padding: 10px 15px;
+        border-left: 3px solid transparent;
+      }
+      .sidebar .nav-link:hover {
+        color: var(--primary-blue-light);
+        background-color: #e9ecef;
+      }
+
+      /* تمييز العنصر النشط (هنا هو Questions & Weights) */
+      .sidebar .nav-item.active-q .nav-link {
+        color: var(--primary-blue-dark);
+        background-color: #e9ecef;
+        border-left-color: var(--accent-yellow);
+        font-weight: bold;
+      }
+      /* تنسيق الشعار */
+      .admin-navbar .navbar-brand {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+      }
+      .admin-navbar .navbar-brand .logo-icon {
+        color: var(--accent-yellow) !important;
+      }
+      .text-warning {
+        color: var(--accent-yellow) !important;
+      }
+      /* باقي التنسيقات مثل main-content, table-responsive, button styles... يجب إضافتها هنا */
+
+      /* تخصيص خاص بهذه الصفحة: زر إضافة جديد */
+      .add-new-btn {
+        background-color: var(--primary-blue-dark);
+        color: white;
+        transition: background-color 0.3s;
+      }
+      .add-new-btn:hover {
+        background-color: var(--primary-blue-light);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark admin-navbar">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <i class="fas fa-brain me-2 fs-4 logo-icon"></i>
+          <h5 class="d-inline-block fw-bold mb-0">
+            <span class="text-white">Edu</span>
+            <span class="text-warning">PathAI</span>
+          </h5>
+        </a>
+        <div class="d-flex align-items-center">
+          <span class="navbar-text me-3 text-white">Admin Panel</span>
+          <i class="fas fa-user-circle fs-4 text-white me-2"></i>
+          <a class="btn btn-sm btn-outline-light" href="#">Logout</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="d-flex admin-layout">
+      <div class="sidebar">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="admin_dashboard.html"
+              ><i class="fas fa-home me-2"></i> Dashboard</a
+            >
+          </li>
+          <li class="nav-item active-q">
+            <a class="nav-link" href="questions_weights.html"
+              ><i class="fas fa-question-circle me-2"></i> Questions &
+              Weights</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="user_reports.html"
+              ><i class="fas fa-chart-bar me-2"></i> User Reports</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="settings.html"
+              ><i class="fas fa-cog me-2"></i> Settings</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <main class="main-content p-4">
+        <div class="container-fluid">
+          <h2 class="mb-4">Questions & Weights Management</h2>
+
+          <div class="d-flex justify-content-between mb-3">
+            <input
+              type="text"
+              class="form-control me-2 w-50"
+              placeholder="Search questions..."
+            />
+            <button class="btn add-new-btn">Add New</button>
+          </div>
+
+          <div class="card table-card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-striped table-sm admin-table">
+                  <thead>
+                    <tr>
+                      <th>Question ID</th>
+                      <th>Question Text</th>
+                      <th>Part</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>What is your favorite subject?</td>
+                      <td>Part 1</td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-info edit-weights-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editWeightsModal"
+                        >
+                          Edit Weights
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>How do you prefer to communicate?</td>
+                      <td>Part 1</td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-info edit-weights-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editWeightsModal"
+                        >
+                          Edit Weights
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>Are you detail-oriented?</td>
+                      <td>Part 1</td>
+                      <td>
+                        <button
+                          class="btn btn-sm btn-info edit-weights-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editWeightsModal"
+                        >
+                          Edit Weights
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div
+      class="modal fade"
+      id="editWeightsModal"
+      tabindex="-1"
+      aria-labelledby="editWeightsModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editWeightsModalLabel">
+              Edit Weights for QID: 1
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p class="text-muted">Question: What is your favorite subject?</p>
+            <div class="row">
+              <div class="col-md-6">
+                <h6 class="fw-bold text-primary">Trait Weights</h6>
+                <div class="mb-2">
+                  <label class="form-label">Leadership:</label>
+                  <input type="number" class="form-control" value="5" />
+                </div>
+                <div class="mb-2">
+                  <label class="form-label">Communication:</label>
+                  <input type="number" class="form-control" value="9" />
+                </div>
+                <div class="mb-2">
+                  <label class="form-label">Problem-solving:</label>
+                  <input type="number" class="form-control" value="4" />
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <h6 class="fw-bold text-success">Major Weights</h6>
+                <div class="mb-2">
+                  <label class="form-label">Computer Science:</label>
+                  <input type="number" class="form-control" value="9" />
+                </div>
+                <div class="mb-2">
+                  <label class="form-label">Medicine:</label>
+                  <input type="number" class="form-control" value="5" />
+                </div>
+                <div class="mb-2">
+                  <label class="form-label">Engineering:</label>
+                  <input type="number" class="form-control" value="6" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button type="button" class="btn btn-primary add-new-btn">
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
