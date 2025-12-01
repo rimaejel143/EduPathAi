@@ -1,0 +1,314 @@
+part1_score,part2_score,part3_score,major_name
+120,100,80,Computer Science
+130,110,75,Computer Science
+140,120,70,Computer Science
+115,105,85,Computer Science
+125,115,90,Computer Science
+110,95,60,Computer Science
+135,125,80,Computer Science
+150,130,70,Computer Science
+145,120,65,Computer Science
+130,140,60,Computer Science
+120,110,55,Computer Science
+140,115,50,Computer Science
+155,120,60,Computer Science
+160,130,70,Computer Science
+170,140,75,Computer Science
+125,100,60,Computer Science
+130,105,65,Computer Science
+140,130,80,Computer Science
+150,140,90,Computer Science
+135,110,70,Computer Science
+118,102,58,Computer Science
+142,118,66,Computer Science
+128,112,62,Computer Science
+138,122,72,Computer Science
+148,132,78,Computer Science
+
+80,140,60,Software Engineering
+85,145,65,Software Engineering
+90,150,70,Software Engineering
+78,138,58,Software Engineering
+88,142,62,Software Engineering
+95,155,75,Software Engineering
+100,160,80,Software Engineering
+92,148,70,Software Engineering
+86,144,68,Software Engineering
+98,152,74,Software Engineering
+105,165,82,Software Engineering
+110,170,85,Software Engineering
+89,149,69,Software Engineering
+94,154,73,Software Engineering
+102,158,76,Software Engineering
+96,146,71,Software Engineering
+84,140,63,Software Engineering
+112,168,88,Software Engineering
+108,162,84,Software Engineering
+99,151,72,Software Engineering
+91,143,67,Software Engineering
+87,141,66,Software Engineering
+93,147,69,Software Engineering
+97,153,73,Software Engineering
+101,159,77,Software Engineering
+
+60,80,160,Data Science
+65,85,165,Data Science
+70,90,170,Data Science
+58,78,158,Data Science
+68,88,168,Data Science
+75,95,175,Data Science
+80,100,180,Data Science
+72,92,172,Data Science
+66,86,166,Data Science
+78,98,174,Data Science
+85,105,182,Data Science
+90,110,185,Data Science
+69,89,169,Data Science
+74,94,174,Data Science
+82,102,178,Data Science
+76,96,176,Data Science
+64,84,164,Data Science
+92,112,188,Data Science
+88,108,184,Data Science
+79,99,173,Data Science
+71,91,171,Data Science
+67,87,167,Data Science
+73,93,173,Data Science
+77,97,177,Data Science
+81,101,179,Data Science
+
+50,40,200,Medicine
+55,45,195,Medicine
+60,50,190,Medicine
+48,38,188,Medicine
+58,48,192,Medicine
+65,55,185,Medicine
+70,60,180,Medicine
+62,52,182,Medicine
+56,46,186,Medicine
+68,58,178,Medicine
+75,65,170,Medicine
+80,70,165,Medicine
+59,49,191,Medicine
+64,54,186,Medicine
+72,62,174,Medicine
+66,56,180,Medicine
+54,44,184,Medicine
+78,68,172,Medicine
+74,64,176,Medicine
+69,59,179,Medicine
+61,51,183,Medicine
+57,47,187,Medicine
+63,53,181,Medicine
+67,57,177,Medicine
+71,61,173,Medicine
+
+40,50,160,Biotechnology
+45,55,165,Biotechnology
+50,60,170,Biotechnology
+38,48,158,Biotechnology
+48,58,168,Biotechnology
+55,65,175,Biotechnology
+60,70,180,Biotechnology
+52,62,172,Biotechnology
+46,56,166,Biotechnology
+58,68,174,Biotechnology
+65,75,182,Biotechnology
+70,80,185,Biotechnology
+49,59,169,Biotechnology
+54,64,174,Biotechnology
+62,72,178,Biotechnology
+56,66,176,Biotechnology
+44,54,164,Biotechnology
+72,82,188,Biotechnology
+68,78,184,Biotechnology
+59,69,173,Biotechnology
+51,61,171,Biotechnology
+47,57,167,Biotechnology
+53,63,173,Biotechnology
+57,67,177,Biotechnology
+61,71,179,Biotechnology
+
+30,40,150,Pharmacy
+35,45,155,Pharmacy
+40,50,160,Pharmacy
+28,38,148,Pharmacy
+38,48,158,Pharmacy
+45,55,165,Pharmacy
+50,60,170,Pharmacy
+42,52,162,Pharmacy
+36,46,156,Pharmacy
+48,58,164,Pharmacy
+55,65,172,Pharmacy
+60,70,175,Pharmacy
+39,49,159,Pharmacy
+44,54,164,Pharmacy
+52,62,168,Pharmacy
+46,56,166,Pharmacy
+34,44,154,Pharmacy
+62,72,182,Pharmacy
+58,68,178,Pharmacy
+49,59,167,Pharmacy
+41,51,161,Pharmacy
+37,47,157,Pharmacy
+43,53,163,Pharmacy
+47,57,167,Pharmacy
+51,61,169,Pharmacy
+
+60,90,70,Business Administration
+65,95,75,Business Administration
+70,100,80,Business Administration
+58,88,68,Business Administration
+68,98,78,Business Administration
+75,105,85,Business Administration
+80,110,90,Business Administration
+72,102,82,Business Administration
+66,96,76,Business Administration
+78,108,84,Business Administration
+85,115,92,Business Administration
+90,120,95,Business Administration
+69,99,79,Business Administration
+74,104,83,Business Administration
+82,112,87,Business Administration
+76,106,86,Business Administration
+64,94,74,Business Administration
+92,122,98,Business Administration
+88,118,94,Business Administration
+79,109,85,Business Administration
+71,101,81,Business Administration
+67,97,77,Business Administration
+73,103,83,Business Administration
+77,107,88,Business Administration
+81,111,89,Business Administration
+
+80,110,50,Finance
+85,115,55,Finance
+90,120,60,Finance
+78,108,48,Finance
+88,118,58,Finance
+95,125,65,Finance
+100,130,70,Finance
+92,122,64,Finance
+86,116,60,Finance
+98,128,66,Finance
+105,135,72,Finance
+110,140,75,Finance
+89,119,59,Finance
+94,124,64,Finance
+102,132,68,Finance
+96,126,66,Finance
+84,114,56,Finance
+112,142,78,Finance
+108,138,74,Finance
+99,129,69,Finance
+91,121,61,Finance
+87,117,57,Finance
+93,123,63,Finance
+97,127,67,Finance
+101,131,71,Finance
+
+70,60,40,Marketing
+75,65,45,Marketing
+80,70,50,Marketing
+68,58,38,Marketing
+78,68,48,Marketing
+85,75,55,Marketing
+90,80,60,Marketing
+82,72,52,Marketing
+76,66,46,Marketing
+88,78,54,Marketing
+95,85,62,Marketing
+100,90,65,Marketing
+79,69,49,Marketing
+84,74,54,Marketing
+92,82,58,Marketing
+86,76,56,Marketing
+74,64,44,Marketing
+102,92,68,Marketing
+98,88,64,Marketing
+89,79,59,Marketing
+81,71,51,Marketing
+77,67,47,Marketing
+83,73,53,Marketing
+87,77,57,Marketing
+91,81,61,Marketing
+
+40,80,30,Graphic Design
+45,85,35,Graphic Design
+50,90,40,Graphic Design
+38,78,28,Graphic Design
+48,88,38,Graphic Design
+55,95,45,Graphic Design
+60,100,50,Graphic Design
+52,92,42,Graphic Design
+46,86,36,Graphic Design
+58,98,44,Graphic Design
+65,105,52,Graphic Design
+70,110,55,Graphic Design
+49,89,39,Graphic Design
+54,94,44,Graphic Design
+62,102,48,Graphic Design
+56,96,46,Graphic Design
+44,84,34,Graphic Design
+72,112,56,Graphic Design
+68,108,52,Graphic Design
+59,99,43,Graphic Design
+51,91,41,Graphic Design
+47,87,37,Graphic Design
+53,93,43,Graphic Design
+57,97,47,Graphic Design
+61,101,49,Graphic Design
+
+60,70,50,Architecture
+65,75,55,Architecture
+70,80,60,Architecture
+58,68,48,Architecture
+68,78,58,Architecture
+75,85,65,Architecture
+80,90,70,Architecture
+72,82,62,Architecture
+66,76,56,Architecture
+78,88,64,Architecture
+85,95,72,Architecture
+90,100,75,Architecture
+69,79,59,Architecture
+74,84,63,Architecture
+82,92,67,Architecture
+76,86,66,Architecture
+64,74,54,Architecture
+92,102,78,Architecture
+88,98,74,Architecture
+79,89,65,Architecture
+71,81,61,Architecture
+67,77,57,Architecture
+73,83,63,Architecture
+77,87,67,Architecture
+81,91,69,Architecture
+
+50,60,120,Psychology
+55,65,125,Psychology
+60,70,130,Psychology
+48,58,118,Psychology
+58,68,128,Psychology
+65,75,135,Psychology
+70,80,140,Psychology
+62,72,132,Psychology
+56,66,126,Psychology
+68,78,134,Psychology
+75,85,142,Psychology
+80,90,145,Psychology
+59,69,129,Psychology
+64,74,134,Psychology
+72,82,138,Psychology
+66,76,136,Psychology
+54,64,124,Psychology
+82,92,146,Psychology
+78,88,142,Psychology
+69,79,133,Psychology
+61,71,131,Psychology
+57,67,127,Psychology
+63,73,133,Psychology
+67,77,137,Psychology
+71,81,139,Psychology
+
+90,500,7,"Software Engineering"

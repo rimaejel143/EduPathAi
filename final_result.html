@@ -48,30 +48,130 @@
 
   <body>
     <div class="container">
-      <div class="result-card text-center">
-        <h2 class="mb-4">🎓 Your Final Recommended Major</h2>
-
-        <div id="loading">Calculating your results...</div>
+      <div class="result-card">
+        <div id="loading" class="text-center">Calculating your results...</div>
 
         <div id="result-box" style="display: none">
-          <p class="final-major" id="major-name"></p>
-          <span class="confidence-pill" id="confidence"></span>
+          <div class="row align-items-center">
+            <div class="col-md-7">
+              <h3 class="intro">Congratulations! Your Recommended Path Is:</h3>
 
-          <h4 class="mt-4">Your Scores</h4>
+              <div class="d-flex align-items-center mb-3">
+                <div class="major-icon" aria-hidden="true"></div>
+                <p class="final-major mb-0" id="major-name"></p>
+              </div>
 
-          <ul class="list-group mt-3" id="scores-list"></ul>
+              <div class="mb-3">
+                <span class="confidence-pill" id="confidence"></span>
+              </div>
 
-          <button
-            class="btn btn-primary mt-4 px-5"
-            onclick="window.location.href='index.html'"
-          >
-            Finish
-          </button>
+              <p class="lead text-muted description">
+                Unlock your potential in the world of information and analysis.
+              </p>
+
+              <button
+                class="cta btn btn-primary mt-3 px-4"
+                onclick="exportFullPDF()"
+              >
+                Download My Career Report
+              </button>
+            </div>
+
+            <div class="col-md-5 text-center">
+              <div class="pie-wrap">
+                <div class="pie" id="major-pie"></div>
+                <div class="legend">
+                  <div class="legend-item">
+                    <span class="legend-dot dot-1"></span>
+                    <span class="legend-label"
+                      >Logic: <strong id="logic-val">0</strong>%</span
+                    >
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-dot dot-2"></span>
+                    <span class="legend-label"
+                      >Creativity: <strong id="creativity-val">0</strong>%</span
+                    >
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-dot dot-3"></span>
+                    <span class="legend-label"
+                      >Social: <strong id="social-val">0</strong>%</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <ul class="d-none" id="scores-list"></ul>
+
+          <div class="text-center mt-4">
+            <button
+              class="btn btn-outline-primary px-5"
+              onclick="window.location.href='index.html'"
+            >
+              Finish
+            </button>
+          </div>
         </div>
       </div>
     </div>
 
     <script>
+      // Central UI updater used by both final_result fetch and results_logic.js
+      function updateResultUI(ai, scores) {
+        try {
+          document.getElementById("loading").style.display = "none";
+          document.getElementById("result-box").style.display = "block";
+
+          const majorName = ai && ai.major ? ai.major : "No major";
+          const confidence =
+            ai && ai.confidence !== undefined ? ai.confidence : "";
+          document.getElementById("major-name").innerText = majorName;
+          document.getElementById("confidence").innerText =
+            "Confidence: " + confidence + "%";
+
+          const s = Array.isArray(scores)
+            ? scores
+            : ai && ai.scores
+            ? ai.scores
+            : [];
+          const p1 = Number(s[0] || 0);
+          const p2 = Number(s[1] || 0);
+          const p3 = Number(s[2] || 0);
+
+          const scoresList = document.getElementById("scores-list");
+          if (scoresList) {
+            scoresList.innerHTML = `\n<li class="list-group-item"><strong>Part 1 – Personality:</strong> ${p1}</li>\n<li class="list-group-item"><strong>Part 2 – Interests:</strong> ${p2}</li>\n<li class="list-group-item"><strong>Part 3 – Academic Ability:</strong> ${p3}</li>`;
+          }
+
+          // compute percentages
+          const total = p1 + p2 + p3 || 1;
+          const pa = Math.max(0, Math.round((p1 / total) * 100));
+          const pb = Math.max(0, Math.round((p2 / total) * 100));
+          const pc = Math.max(0, Math.round(100 - pa - pb));
+
+          const pie = document.getElementById("major-pie");
+          if (pie) {
+            const degA = (pa / 100) * 360;
+            const degB = (pb / 100) * 360;
+            pie.style.background = `conic-gradient(#1b3a5e 0deg ${degA}deg, #ff6b6b ${degA}deg ${
+              degA + degB
+            }deg, #ffd94d ${degA + degB}deg 360deg)`;
+          }
+
+          const l1 = document.getElementById("logic-val");
+          const l2 = document.getElementById("creativity-val");
+          const l3 = document.getElementById("social-val");
+          if (l1) l1.innerText = pa;
+          if (l2) l2.innerText = pb;
+          if (l3) l3.innerText = pc;
+        } catch (err) {
+          console.error("updateResultUI error", err);
+        }
+      }
+
       document.addEventListener("DOMContentLoaded", () => {
         fetch("php/assessment/final_result.php")
           .then((res) => res.json())
@@ -81,32 +181,292 @@
                 "Error: " + data.message;
               return;
             }
-
-            document.getElementById("loading").style.display = "none";
-            document.getElementById("result-box").style.display = "block";
-
-            document.getElementById("major-name").innerHTML = data.major;
-            document.getElementById("confidence").innerHTML =
-              "Confidence: " + data.confidence + "%";
-
-            let scoresHTML = `
-            <li class="list-group-item">
-              <strong>Part 1 – Personality:</strong> ${data.scores[0]}
-            </li>
-            <li class="list-group-item">
-              <strong>Part 2 – Interests:</strong> ${data.scores[1]}
-            </li>
-            <li class="list-group-item">
-              <strong>Part 3 – Academic Ability:</strong> ${data.scores[2]}
-            </li>
-          `;
-
-            document.getElementById("scores-list").innerHTML = scoresHTML;
+            // Use the centralized updater to render everything consistently
+            updateResultUI(data, data.scores || []);
           })
           .catch(() => {
             document.getElementById("loading").innerHTML = "System Error.";
           });
       });
+    </script>
+
+    <!-- html2canvas CDN (required for visual snapshot) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- jsPDF UMD CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+      // exportFullPDF: capture the `.result-card` and save as A4 PDF using jsPDF + html2canvas
+      async function exportFullPDF() {
+        try {
+          const el = document.querySelector(".result-card");
+          if (!el) {
+            alert("Could not find result container to export.");
+            return;
+          }
+
+          // show temporary feedback
+          const origText =
+            document.activeElement && document.activeElement.innerText;
+
+          // use a slightly larger scale for better print quality
+          const scale = Math.min(2.5, window.devicePixelRatio || 2);
+
+          const canvas = await html2canvas(el, {
+            scale: scale,
+            useCORS: true,
+            logging: false,
+            backgroundColor: null,
+          });
+
+          const imgData = canvas.toDataURL("image/jpeg", 1.0);
+
+          // create jsPDF instance (support both modern and older bundles)
+          let doc;
+          if (window.jspdf && window.jspdf.jsPDF) {
+            doc = new window.jspdf.jsPDF("p", "mm", "a4");
+          } else if (window.jsPDF) {
+            doc = new window.jsPDF("p", "mm", "a4");
+          } else {
+            alert("jsPDF is not available. Please ensure jsPDF is loaded.");
+            return;
+          }
+
+          // page size in mm
+          const pageWidth = doc.internal.pageSize.getWidth();
+          const pageHeight = doc.internal.pageSize.getHeight();
+
+          // canvas size in px
+          const imgWidthPx = canvas.width;
+          const imgHeightPx = canvas.height;
+
+          // convert to mm at 96dpi: mm = px * 25.4 / dpi
+          const dpi = 96 * (scale || 1);
+          const imgWidthMm = (imgWidthPx * 25.4) / dpi;
+          const imgHeightMm = (imgHeightPx * 25.4) / dpi;
+
+          // fit to page preserving aspect ratio
+          let renderWidth = pageWidth;
+          let renderHeight = (imgHeightMm * pageWidth) / imgWidthMm;
+          if (renderHeight > pageHeight) {
+            renderHeight = pageHeight;
+            renderWidth = (imgWidthMm * pageHeight) / imgHeightMm;
+          }
+
+          const marginX = (pageWidth - renderWidth) / 2;
+          const marginY = (pageHeight - renderHeight) / 2;
+
+          doc.addImage(
+            imgData,
+            "JPEG",
+            marginX,
+            marginY,
+            renderWidth,
+            renderHeight
+          );
+          doc.save("career_report.pdf");
+        } catch (err) {
+          console.error("exportFullPDF error", err);
+          alert("Failed to generate PDF. See console for details.");
+        }
+      }
+    </script>
+
+    <style>
+      /* Data Science-inspired styles (keeps palette and layout close to design) */
+      :root {
+        --card-bg: #ffffff;
+        --page-bg: #f4f7fa;
+      }
+      body {
+        background: var(--page-bg);
+      }
+      .result-card {
+        background: var(--card-bg);
+        border-radius: 22px;
+        margin: 40px auto;
+        padding: 48px 64px;
+        box-shadow: 0 18px 40px rgba(30, 70, 100, 0.06);
+        max-width: 1200px;
+      }
+      .intro {
+        font-size: 1.2rem;
+        color: var(--primary-blue);
+        font-weight: 700;
+        margin-bottom: 14px;
+      }
+      .major-icon {
+        width: 72px;
+        height: 72px;
+        border-radius: 12px;
+        background: linear-gradient(180deg, #ffd94d 0%, #fdc80a 100%);
+        margin-right: 18px;
+        box-shadow: 0 10px 30px rgba(29, 58, 94, 0.06);
+        flex: 0 0 72px;
+      }
+      .final-major {
+        font-size: 48px;
+        font-weight: 800;
+        color: var(--primary-blue);
+        margin: 0;
+        line-height: 1;
+      }
+      .description {
+        margin-top: 18px;
+        font-size: 1rem;
+        color: #8b99a6;
+      }
+      .confidence-pill {
+        background: linear-gradient(180deg, #ffd94d, #fdc80a);
+        padding: 12px 22px;
+        border-radius: 30px;
+        display: inline-block;
+        font-weight: 700;
+        color: #132733;
+        box-shadow: 0 8px 20px rgba(29, 58, 94, 0.06);
+      }
+      .cta {
+        background: var(--primary-blue);
+        border-color: var(--primary-blue);
+        border-radius: 8px;
+        padding: 12px 20px;
+      }
+
+      .pie-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 28px;
+      }
+      .pie {
+        width: 260px;
+        height: 260px;
+        border-radius: 50%;
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.06);
+        background: conic-gradient(
+          #ffd94d 0deg 120deg,
+          #ff6b6b 120deg 240deg,
+          #1b3a5e 240deg 360deg
+        );
+      }
+      .legend {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+      }
+      .legend-item {
+        font-size: 0.95rem;
+        color: #263238;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .legend-dot {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+      }
+      .dot-1 {
+        background: #1b3a5e;
+      }
+      .dot-2 {
+        background: #ff6b6b;
+      }
+      .dot-3 {
+        background: #ffd94d;
+      }
+      .legend-label {
+        color: #334153;
+      }
+
+      .text-center .btn-outline-primary {
+        border-radius: 10px;
+        padding: 10px 26px;
+      }
+
+      /* Responsive tweaks */
+      @media (max-width: 991px) {
+        .result-card {
+          padding: 32px;
+        }
+        .final-major {
+          font-size: 34px;
+        }
+        .pie {
+          width: 200px;
+          height: 200px;
+        }
+      }
+      @media (max-width: 575px) {
+        .result-card {
+          padding: 20px;
+        }
+        .row.align-items-center {
+          flex-direction: column;
+        }
+        .pie-wrap {
+          margin-top: 18px;
+        }
+      }
+    </style>
+
+    <script>
+      /* Non-invasive UI renderer: observes #scores-list and updates pie + legend.
+         This does not modify existing logic or API calls; it only reads the DOM
+         after the main fetch populates the scores. */
+      (function () {
+        function parseScoresFromList() {
+          const list = document.getElementById("scores-list");
+          if (!list) return null;
+          const items = Array.from(list.querySelectorAll("li"));
+          if (items.length < 3) return null;
+          const nums = items.map((li) => {
+            const txt = li.textContent || "";
+            const m = txt.match(/(-?\d+(?:\.\d+)?)/);
+            return m ? Number(m[1]) : 0;
+          });
+          return nums;
+        }
+
+        function updatePie(values) {
+          const [a, b, c] = values.map((v) => (isFinite(v) ? v : 0));
+          const total = a + b + c || 1;
+          const pa = Math.max(0, Math.round((a / total) * 100));
+          const pb = Math.max(0, Math.round((b / total) * 100));
+          const pc = Math.max(0, Math.max(0, 100 - pa - pb));
+          const degA = (pa / 100) * 360;
+          const degB = (pb / 100) * 360;
+          const degC = 360 - degA - degB;
+          const pie = document.getElementById("major-pie");
+          if (pie) {
+            pie.style.background = `conic-gradient(#1b3a5e 0deg ${degA}deg, #ff6b6b ${degA}deg ${
+              degA + degB
+            }deg, #ffd94d ${degA + degB}deg 360deg)`;
+          }
+          const l1 = document.getElementById("logic-val");
+          const l2 = document.getElementById("creativity-val");
+          const l3 = document.getElementById("social-val");
+          if (l1) l1.innerText = pa;
+          if (l2) l2.innerText = pb;
+          if (l3) l3.innerText = pc;
+        }
+
+        // Watch for the scores injection by the existing fetch code
+        document.addEventListener("DOMContentLoaded", function () {
+          const target = document.getElementById("scores-list");
+          if (!target) return;
+          const obs = new MutationObserver(function (muts) {
+            const vals = parseScoresFromList();
+            if (vals && vals.length >= 3) {
+              updatePie(vals);
+              obs.disconnect();
+            }
+          });
+          obs.observe(target, { childList: true, subtree: true });
+        });
+      })();
     </script>
   </body>
 </html>

@@ -44,12 +44,17 @@ try {
         $scores[] = intval($r['total_score']);
     }
 
+    // Scores stored in `assessment_part_results` are normalized by calculate_part_result.php
+    // so use them directly.
+    $normScores = $scores;
+
     // 3) Call AI Major Predictor
     $url = "http://localhost/SeniorEducation/php/api/predict_major.php";
 
+    // Call predictor with normalized scores (already stored normalized)
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["scores" => $scores]));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["scores" => $normScores]));
     curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_TIMEOUT, 15);
@@ -63,13 +68,22 @@ try {
         exit;
     }
 
+    // Decode predictor response. Handle case where predictor returned a JSON string (double-encoded)
     $ai = json_decode($response, true);
     if ($ai === null) {
         echo json_encode(["success" => false, "message" => "AI failed", "details" => $response]);
         exit;
     }
 
-    if (!isset($ai['success']) || $ai['success'] !== true) {
+    // If decoded value is a string (predictor double-encoded JSON), try to decode inner JSON
+    if (is_string($ai)) {
+        $inner = json_decode($ai, true);
+        if ($inner !== null) {
+            $ai = $inner;
+        }
+    }
+
+    if (!is_array($ai) || !isset($ai['success']) || $ai['success'] !== true) {
         echo json_encode(["success" => false, "message" => "AI failed", "details" => $response]);
         exit;
     }
@@ -91,11 +105,49 @@ try {
 
     
     // 5) Return JSON response to frontend
+    // --- Append this new labeled sample to the AI dataset.csv (safe, non-blocking)
+    try {
+        $csvPath = __DIR__ . '/../ai/dataset.csv';
+        $csvDir = dirname($csvPath);
+        if (!is_dir($csvDir)) {
+            // attempt to create ai dir if missing
+            @mkdir($csvDir, 0755, true);
+        }
+        $exists = file_exists($csvPath);
+        $fp = @fopen($csvPath, 'a');
+        if ($fp) {
+            // acquire exclusive lock to avoid races
+            if (flock($fp, LOCK_EX)) {
+                // if file didn't exist, write header
+                if (!$exists) {
+                    fputcsv($fp, ['part1_score', 'part2_score', 'part3_score', 'major_name']);
+                }
+                // ensure we have three numeric scores
+                // Append stored normalized scores to dataset so retraining remains in-range
+                $p1 = isset($scores[0]) ? intval($scores[0]) : 0;
+                $p2 = isset($scores[1]) ? intval($scores[1]) : 0;
+                $p3 = isset($scores[2]) ? intval($scores[2]) : 0;
+                $mname = is_string($major) ? $major : strval($major ?? '');
+                fputcsv($fp, [$p1, $p2, $p3, $mname]);
+                fflush($fp);
+                flock($fp, LOCK_UN);
+            }
+            fclose($fp);
+        }
+    } catch (Exception $e) {
+        // don't break main flow if append fails; optionally log error
+        if (function_exists('error_log')) {
+            error_log('dataset append failed: ' . $e->getMessage());
+        }
+    }
+
     echo json_encode([
         "success" => true,
         "major" => $major,
         "confidence" => $confidence,
-        "scores" => $scores
+        // return stored scores (already normalized by calculate_part_result) and original raw
+        "scores" => $scores,
+        "raw_scores" => $scores
     ]);
 
 } catch (Exception $e) {
