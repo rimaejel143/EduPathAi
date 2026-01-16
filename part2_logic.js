@@ -1,123 +1,194 @@
 console.log("PART2 JS LOADED");
 
-// ---------------------------
-// Part 2 has 30 questions only
-// Question IDs: 21 → 50
-// ---------------------------
 let currentQuestion = 0;
-const totalQuestions = 30;
+let totalQuestions = 0;
+let questions = [];
+let selectedAnswers = [];
 
-// Save selected answers
-let selectedAnswers = Array(totalQuestions).fill(null);
+// Safe init
+(function init() {
+  const run = () => {
+    console.log("DOM READY");
 
-// 30 QUESTIONS ONLY
-const questions = [
-  "I enjoy working with computers and solving technical problems.",
-  "I like drawing, designing, or creating visual things.",
-  "I am interested in how the human body works.",
-  "I like managing budgets or organizing business plans.",
-  "I’m curious about social justice and human rights.",
-  "I like experimenting and building things.",
-  "I enjoy playing with design software like Photoshop or Canva.",
-  "I enjoy helping people stay healthy or learn about medicine.",
-  "I enjoy analyzing financial data.",
-  "I’m interested in laws, government, or debates.",
-  "I like fixing mechanical or electrical devices.",
-  "I’m passionate about music, art, or photography.",
-  "I enjoy researching diseases or biological systems.",
-  "I like planning projects and leading teams.",
-  "I like discussing ethics, justice, and philosophy.",
-  "I like logical games or puzzles.",
-  "I enjoy creating aesthetic visuals.",
-  "I like working in laboratories or doing experiments.",
-  "I like marketing and entrepreneurship.",
-  "I’m interested in history and culture.",
-  "I enjoy coding or using technology to solve problems.",
-  "I find joy in crafting or designing new concepts.",
-  "I want to help discover new medical solutions.",
-  "I enjoy analyzing market trends.",
-  "I’m passionate about human rights.",
-  "I enjoy working with machines or systems.",
-  "I find satisfaction in creative expression.",
-  "I am fascinated by biology and anatomy.",
-  "I am good at planning investments and budgets.",
-  "I enjoy participating in debates and social causes.",
-];
+    const questionText = document.getElementById("question-text");
+    const buttons = document.querySelectorAll(".answer-btn");
+    const nextButton = document.getElementById("next-btn");
+    const prevButton = document.getElementById("prev-btn");
+    const counter = document.getElementById("counter");
 
-// DOM elements
-const questionText = document.getElementById("question-text");
-const buttons = document.querySelectorAll(".answer-btn");
-const nextButton = document.getElementById("next-btn");
-const prevButton = document.getElementById("prev-btn");
-const counter = document.getElementById("counter");
+    // Load questions from DB
+    fetch("php/assessment/get_questions.php?part=2", {
+      credentials: "same-origin",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data.success) {
+          alert("Failed to load Part 2 questions");
+          return;
+        }
 
-// Load first question
-document.addEventListener("DOMContentLoaded", () => {
-  loadQuestion();
-});
+        questions = data.questions;
+        totalQuestions = questions.length;
+        selectedAnswers = Array(totalQuestions).fill(null);
 
-// Load a question
-function loadQuestion() {
-  const questionID = 21 + currentQuestion; // FIX: Starts at 21
+        // Attempt to restore any saved progress (answers and last position)
+        // loadSavedProgress will update `selectedAnswers` and `currentQuestion`
+        // and refresh the UI accordingly.
+        loadSavedProgress(questionText, buttons, counter).then(() => {
+          // Ensure UI is shown even if no progress exists
+          counter.textContent = `Question ${
+            currentQuestion + 1
+          } of ${totalQuestions}`;
+          loadQuestion(questionText, buttons);
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Error loading questions");
+      });
 
-  questionText.textContent = `Question ${questionID}: ${questions[currentQuestion]}`;
-  counter.textContent = `Question ${currentQuestion + 21} of 50`;
+    // Answer click
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const value = parseInt(btn.dataset.value);
+        selectedAnswers[currentQuestion] = value;
+        highlightSelected(value, buttons);
+      });
+    });
 
-  buttons.forEach((btn) => {
-    btn.classList.remove("active");
-    if (parseInt(btn.dataset.value) === selectedAnswers[currentQuestion]) {
-      btn.classList.add("active");
-    }
-  });
+    nextButton.addEventListener("click", () =>
+      nextQuestion(questionText, buttons, counter)
+    );
+
+    prevButton.addEventListener("click", () =>
+      previousQuestion(questionText, buttons, counter)
+    );
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", run);
+  } else {
+    run();
+  }
+})();
+
+// Load question
+function loadQuestion(questionText, buttons) {
+  const q = questions[currentQuestion];
+
+  questionText.textContent = `Question ${currentQuestion + 1}: ${
+    q.question_text
+  }`;
+
+  buttons[0].textContent = q.option_a;
+  buttons[1].textContent = q.option_b;
+  buttons[2].textContent = q.option_c;
+  buttons[3].textContent = q.option_d;
+
+  highlightSelected(selectedAnswers[currentQuestion], buttons);
 }
 
-// Click on an answer (only highlight)
-buttons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const value = parseInt(btn.dataset.value);
-    selectedAnswers[currentQuestion] = value;
+// Highlight selected
+function highlightSelected(value, buttons) {
+  buttons.forEach((btn) =>
+    btn.classList.toggle("active", parseInt(btn.dataset.value) === value)
+  );
+}
 
-    buttons.forEach((b) => b.classList.remove("active"));
-    btn.classList.add("active");
-  });
-});
-
-// NEXT QUESTION
-nextButton.addEventListener("click", () => {
+// Next
+function nextQuestion(questionText, buttons, counter) {
   if (selectedAnswers[currentQuestion] === null) {
-    alert("Please choose an answer first.");
+    alert("Please select an answer.");
     return;
   }
 
   if (currentQuestion < totalQuestions - 1) {
     currentQuestion++;
-    loadQuestion();
+    loadQuestion(questionText, buttons);
+    counter.textContent = `Question ${
+      currentQuestion + 1
+    } of ${totalQuestions}`;
   } else {
-    savePart2Results(); // Finish
+    saveAnswers();
   }
-});
+}
 
-// PREVIOUS QUESTION
-prevButton.addEventListener("click", () => {
+// Previous
+function previousQuestion(questionText, buttons, counter) {
   if (currentQuestion > 0) {
     currentQuestion--;
-    loadQuestion();
+    loadQuestion(questionText, buttons);
+    counter.textContent = `Question ${
+      currentQuestion + 1
+    } of ${totalQuestions}`;
   }
-});
+}
 
-// SAVE TO DATABASE
-function savePart2Results() {
-  console.log("Saving Part 2 answers...");
+// ====== LOAD SAVED PROGRESS (AFTER QUESTIONS LOADED) ======
+// Called after questions are loaded from the database.
+// Restores: (1) all previously selected answers, (2) the last saved question position
+async function loadSavedProgress(questionText, buttons, counter) {
+  try {
+    const res = await fetch("./php/student/load_progress.php?part=2", {
+      credentials: "include",
+    });
 
+    const data = await res.json();
+    if (!data.success || !data.progress) return;
+
+    const progress = data.progress;
+    console.log("Loaded saved progress:", progress);
+
+    if (progress.answers && typeof progress.answers === "object") {
+      for (const questionId in progress.answers) {
+        const selectedOption = progress.answers[questionId];
+        const questionIndex = questions.findIndex(
+          (q) => q.question_id === parseInt(questionId)
+        );
+        if (questionIndex >= 0) {
+          selectedAnswers[questionIndex] = selectedOption;
+          console.log(
+            `Restored Q${questionIndex + 1}: answer = ${selectedOption}`
+          );
+        }
+      }
+    }
+
+    // Resume from last answered question (not last visited)
+    let lastAnsweredIndex = -1;
+    selectedAnswers.forEach((ans, index) => {
+      if (ans !== null && ans !== undefined) {
+        lastAnsweredIndex = index;
+      }
+    });
+
+    if (lastAnsweredIndex >= 0) {
+      currentQuestion = lastAnsweredIndex;
+    } else {
+      currentQuestion = 0;
+    }
+
+    counter.textContent = `Question ${
+      currentQuestion + 1
+    } of ${totalQuestions}`;
+    loadQuestion(questionText, buttons);
+  } catch (err) {
+    console.error("loadSavedProgress error:", err);
+    // Fail silently
+  }
+}
+
+// Save answers
+function saveAnswers() {
   let answersPayload = selectedAnswers.map((value, index) => ({
-    question_id: 21 + index, // 21 → 50
+    question_id: questions[index].question_id, // 🔴 مهم
     selected: value,
   }));
 
   fetch("php/assessment/save_answers.php", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
     credentials: "same-origin",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       part: 2,
       answers: answersPayload,
@@ -125,19 +196,20 @@ function savePart2Results() {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log("SERVER:", data);
       if (!data.success) {
-        alert("Error saving Part 2: " + data.message);
+        alert("Error saving Part 2");
         return;
       }
       calculatePart2();
     })
-    .catch((err) => console.error(err));
+    .catch(() => alert("Network error"));
 }
 
-// CALCULATE RESULT FOR PART 2
+// Calculate result
 function calculatePart2() {
-  fetch("php/assessment/calculate_part_result.php?part=2")
+  fetch("php/assessment/calculate_part_result.php?part=2", {
+    credentials: "same-origin",
+  })
     .then((res) => res.json())
     .then((result) => {
       if (result.success) {

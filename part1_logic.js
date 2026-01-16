@@ -1,101 +1,195 @@
 console.log("PART1 JS LOADED");
 
-// إعداد المتغيرات
+// ====== Global State ======
 let currentQuestion = 0;
-const totalQuestions = 20;
-let selectedAnswers = Array(totalQuestions).fill(null);
+let questions = [];
+let selectedAnswers = [];
 
-// 🧠 Safe Init (بديل عن DOMContentLoaded)
-(function init() {
-  const run = () => {
-    console.log("DOM READY");
+// ====== DOM Elements ======
+let questionText;
+let buttons;
+let nextButton;
+let prevButton;
+let counter;
 
-    const questionText = document.getElementById("question-text");
-    const buttons = document.querySelectorAll(".btn-group button");
-    const nextButton = document.getElementById("next-btn");
-    const prevButton = document.getElementById("prev-btn");
-    const counter = document.getElementById("counter");
-
-    console.log("Buttons found:", buttons.length);
-    counter.textContent = `Question ${currentQuestion + 1} of 20`;
-
-    loadQuestion(questionText, buttons);
-
-    buttons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const value = parseInt(btn.dataset.value);
-        selectedAnswers[currentQuestion] = value;
-        highlightSelected(value, buttons);
-      });
+// ====== LOAD SAVED PROGRESS (AFTER QUESTIONS LOADED) ======
+// Called after questions are loaded from the database.
+// Restores: (1) all previously selected answers, (2) the last saved question position
+async function loadSavedProgress() {
+  try {
+    // Fetch saved progress from backend
+    // Returns: last_question_number and answers map {question_id: selected_option}
+    const res = await fetch("./php/student/load_progress.php?part=1", {
+      credentials: "include",
     });
 
-    nextButton.addEventListener("click", () =>
-      nextQuestion(questionText, buttons)
-    );
+    const data = await res.json();
+    // If no progress exists or fetch fails, silently return - test starts from Q1
+    if (!data.success || !data.progress) return;
 
-    prevButton.addEventListener("click", () =>
-      previousQuestion(questionText, buttons)
-    );
-  };
+    const progress = data.progress;
+    console.log("Loaded saved progress:", progress);
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", run);
-  } else {
-    run();
+    // STEP 1: Restore all saved answers into selectedAnswers[]
+    // progress.answers is a map: {question_id: selected_option}
+    // Map it to selectedAnswers[index] by matching questions[index].question_id
+    if (progress.answers && typeof progress.answers === "object") {
+      for (const questionId in progress.answers) {
+        const selectedOption = progress.answers[questionId];
+
+        // Find the array index of this question by matching question_id
+        const questionIndex = questions.findIndex(
+          (q) => q.question_id === parseInt(questionId)
+        );
+        if (questionIndex >= 0) {
+          selectedAnswers[questionIndex] = selectedOption;
+          console.log(
+            `Restored Q${questionIndex + 1}: answer = ${selectedOption}`
+          );
+        }
+      }
+    }
+
+    // STEP 2 (FIX): resume from LAST answered question (not last visited)
+    let lastAnsweredIndex = -1;
+
+    selectedAnswers.forEach((ans, index) => {
+      if (ans !== null && ans !== undefined) {
+        lastAnsweredIndex = index;
+      }
+    });
+
+    if (lastAnsweredIndex >= 0) {
+      currentQuestion = lastAnsweredIndex;
+    } else {
+      currentQuestion = 0;
+    }
+
+    // STEP 3: Refresh UI with restored state
+    counter.textContent = `Question ${currentQuestion + 1} of ${
+      questions.length
+    }`;
+    renderQuestion(); // Highlights the saved answer for current question
+  } catch (err) {
+    console.error("loadSavedProgress error:", err);
+    // Fail silently - test continues normally from Question 1
   }
-})();
-
-// تحميل السؤال
-function loadQuestion(questionText, buttons) {
-  questionText.textContent = `Question ${currentQuestion + 1}: ${
-    questions[currentQuestion]
-  }`;
-  highlightSelected(selectedAnswers[currentQuestion], buttons);
 }
 
-// تلوين الاختيار
-function highlightSelected(value, buttons) {
+// ====== INIT ======
+document.addEventListener("DOMContentLoaded", async () => {
+  console.log("DOM READY");
+
+  // bind elements
+  questionText = document.getElementById("question-text");
+  buttons = document.querySelectorAll(".btn-group button");
+  nextButton = document.getElementById("next-btn");
+  prevButton = document.getElementById("prev-btn");
+  counter = document.getElementById("counter");
+
+  // load questions from DB
+  await loadQuestionsFromDB();
+
+  // ✅ load saved progress AFTER questions exist
+  await loadSavedProgress();
+
+  // bind button events
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const value = parseInt(btn.dataset.value);
+      selectedAnswers[currentQuestion] = value;
+      highlightSelected(value);
+    });
+  });
+
+  nextButton.addEventListener("click", nextQuestion);
+  prevButton.addEventListener("click", previousQuestion);
+});
+
+// ====== LOAD QUESTIONS ======
+async function loadQuestionsFromDB() {
+  try {
+    const res = await fetch(
+      "/SeniorEducation/SeniorEducation/php/assessment/get_questions.php?part=1",
+      { credentials: "include" }
+    );
+    const data = await res.json();
+
+    if (!data.success) {
+      alert("Failed to load questions");
+      return;
+    }
+
+    questions = data.questions;
+    selectedAnswers = Array(questions.length).fill(null);
+
+    counter.textContent = `Question 1 of ${questions.length}`;
+    renderQuestion();
+  } catch (err) {
+    console.error(err);
+    alert("Error loading questions");
+  }
+}
+
+// ====== RENDER QUESTION ======
+function renderQuestion() {
+  const q = questions[currentQuestion];
+  if (!q) return;
+
+  questionText.textContent = `Question ${currentQuestion + 1}: ${
+    q.question_text
+  }`;
+
+  buttons[0].textContent = q.option_a;
+  buttons[1].textContent = q.option_b;
+  buttons[2].textContent = q.option_c;
+  buttons[3].textContent = q.option_d;
+
+  highlightSelected(selectedAnswers[currentQuestion]);
+}
+
+// ====== UI HELPERS ======
+function highlightSelected(value) {
   buttons.forEach((btn) =>
     btn.classList.toggle("active", parseInt(btn.dataset.value) === value)
   );
 }
 
-// التالي
-function nextQuestion(questionText, buttons) {
+// ====== NAVIGATION ======
+function nextQuestion() {
   if (selectedAnswers[currentQuestion] === null) {
     alert("Please select an answer.");
     return;
   }
 
-  if (currentQuestion < totalQuestions - 1) {
+  if (currentQuestion < questions.length - 1) {
     currentQuestion++;
-    loadQuestion(questionText, buttons);
-    counter.textContent = `Question ${
-      currentQuestion + 1
-    } of ${totalQuestions}`;
+    counter.textContent = `Question ${currentQuestion + 1} of ${
+      questions.length
+    }`;
+    renderQuestion();
   } else {
     saveAnswers();
   }
 }
 
-// السابق
-function previousQuestion(questionText, buttons) {
+function previousQuestion() {
   if (currentQuestion > 0) {
     currentQuestion--;
-    loadQuestion(questionText, buttons);
-    counter.textContent = `Question ${
-      currentQuestion + 1
-    } of ${totalQuestions}`;
+    counter.textContent = `Question ${currentQuestion + 1} of ${
+      questions.length
+    }`;
+    renderQuestion();
   }
 }
 
-// حفظ الإجابات
+// ====== SAVE ANSWERS ======
 function saveAnswers() {
   console.log("SAVE ANSWERS FUNCTION STARTED");
 
-  let answersPayload = selectedAnswers.map((value, index) => ({
-    question_id: index + 1,
-    selected: value,
+  const answersPayload = questions.map((q, index) => ({
+    question_id: q.question_id, // ✅ مهم
+    selected: selectedAnswers[index],
   }));
 
   fetch("php/assessment/save_answers.php", {
@@ -111,22 +205,16 @@ function saveAnswers() {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log("SERVER JSON:", data);
-
       if (!data.success) {
         alert("Error saving answers: " + data.message);
         return;
       }
-
       calculatePartResult();
     })
-    .catch((err) => {
-      console.error("NETWORK ERROR:", err);
-      alert("Network error");
-    });
+    .catch(() => alert("Network error"));
 }
 
-// حساب النتيجة
+// ====== CALCULATE RESULT ======
 function calculatePartResult() {
   fetch("php/assessment/calculate_part_result.php?part=1", {
     credentials: "same-origin",
@@ -140,27 +228,3 @@ function calculatePartResult() {
       }
     });
 }
-
-// الأسئلة
-const questions = [
-  "I enjoy leading group projects.",
-  "I communicate easily with others.",
-  "I pay attention to small details.",
-  "I stay calm under pressure.",
-  "I like helping others achieve their goals.",
-  "I am confident in decision-making.",
-  "I manage my time effectively.",
-  "I like planning and organizing.",
-  "I adapt well to new situations.",
-  "I stay motivated even when facing challenges.",
-  "I am open to new ideas.",
-  "I handle criticism positively.",
-  "I like analyzing problems.",
-  "I find it easy to work in a team.",
-  "I set goals and work hard to achieve them.",
-  "I like mentoring others.",
-  "I can manage conflicts effectively.",
-  "I am detail-oriented in my work.",
-  "I am comfortable speaking in front of groups.",
-  "I enjoy motivating people.",
-];

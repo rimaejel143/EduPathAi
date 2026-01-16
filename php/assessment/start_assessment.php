@@ -9,8 +9,7 @@ if (!$user_id) {
     echo json_encode(["success"=>false,"message"=>"User not logged in"]);
     exit;
 }
-
-// إنشاء اختبار جديد
+// create new assessment record
 $stmt = $pdo->prepare("
     INSERT INTO student_assessment (user_id, assessment_id, start_time) 
     VALUES (?, 1, NOW())
@@ -19,7 +18,7 @@ $stmt->execute([$user_id]);
 
 $assessment_id = $pdo->lastInsertId();
 
-// حفظ ID داخل SESSION + LocalStorage
+//    SESSION + LocalStorage 
 $_SESSION["last_assessment_id"] = $assessment_id;
 
 echo json_encode([

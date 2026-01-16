@@ -17,7 +17,7 @@ try {
     $stmt = $pdo->prepare("
         SELECT question_id, question_text, option_a, option_b, option_c, option_d
         FROM questions
-        WHERE part_number = ?
+        WHERE part_id = ?
         ORDER BY question_id ASC
     ");
     $stmt->execute([$part]);

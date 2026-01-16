@@ -30,7 +30,7 @@ if (!$row) {
 $traits = json_decode($row["trait_data"], true);
 $total_score = intval($row["total_score"]);
 
-// --- حساب max_score (مهم جداً للـ Progress Bars)
+// max score calculation
 $max_score = count($traits) * 5 * 5;
 
 echo json_encode([

@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- hon krml bas zagher l sura bbyn mtk lmobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EduPathAI</title>
 
@@ -31,7 +32,6 @@
         padding: 0;
       }
 
-      /* Navbar */
       .navbar {
         background-color: #4e7ea7;
       }
@@ -101,35 +101,6 @@
         margin-bottom: 15px;
       }
 
-      /* Responsive adjustments */
-      @media (max-width: 992px) {
-        .hero {
-          height: 50vh;
-        }
-
-        .hero .hero-content {
-          top: 20%;
-          left: 6%;
-        }
-
-        .hero h1 {
-          font-size: 1.6rem;
-        }
-
-        .hero h2 {
-          font-size: 1.2rem;
-        }
-
-        .hero a {
-          font-size: 0.9rem;
-          padding: 8px 16px;
-        }
-
-        .navbar-nav .nav-item {
-          margin-left: 10px;
-        }
-      }
-
       /* How It Works */
       .how-it-works {
         padding: 30px 15px;
@@ -164,21 +135,6 @@
         font-weight: 600;
         margin-bottom: 10px;
       }
-      .custom-card {
-        border: none;
-        border-radius: 12px;
-        background-color: white; /* يجب أن تكون خلفية الكارت بيضاء */
-        transition: transform 0.3s, box-shadow 0.3s;
-      }
-      /* تأثير التحويم (Hover Effect) */
-      .custom-card:hover {
-        transform: translateY(-8px); /* رفع الكارت للأعلى قليلاً */
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15) !important; /* ظل أوضح */
-      }
-      /* لون الأيقونات (البرتقالي) */
-      .custom-card i {
-        color: var(--accent-color); /* البرتقالي */
-      }
 
       footer {
         padding: 20px;
@@ -186,11 +142,72 @@
         background-color: #cde6f7;
         font-size: 0.9rem;
       }
+      /* Modals Design*/
+      .edu-modal .modal-content {
+        border-radius: 14px;
+        border: none;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      }
+
+      .edu-modal .modal-header {
+        background-color: #4e7ea7;
+        color: white;
+        border-bottom: none;
+        border-radius: 14px 14px 0 0;
+      }
+
+      .edu-modal .modal-header i {
+        color: #fdc80a;
+      }
+
+      .edu-modal .modal-title {
+        font-weight: 600;
+      }
+
+      .edu-modal .modal-body {
+        padding: 25px;
+        font-size: 0.95rem;
+      }
+
+      .edu-modal ul {
+        padding-left: 18px;
+      }
+
+      .edu-modal ul li {
+        margin-bottom: 8px;
+      }
+
+      .edu-modal .modal-footer {
+        border-top: none;
+        padding: 15px 25px;
+      }
+
+      .edu-btn-primary {
+        background-color: #fdc80a;
+        color: #fff;
+        border: none;
+        font-weight: 500;
+      }
+
+      .edu-btn-primary:hover {
+        background-color: #ff7b1a;
+        color: white;
+      }
+
+      .edu-btn-secondary {
+        background-color: #e9ecef;
+        border: none;
+        color: #333;
+      }
+
+      .edu-btn-secondary:hover {
+        background-color: #d6d6d6;
+      }
     </style>
   </head>
 
   <body>
-    <!-- navbar -->
+    <!-- Navbar -->
     <div id="navbar-placeholder"></div>
 
     <!-- Hero Section -->
@@ -199,32 +216,73 @@
       <div class="hero-content">
         <h1>Discover Your University Major Path</h1>
         <h2>With Confidence & Intelligence</h2>
-        <a href="sign_in.html" class="btn btn-start rounded-pill"
-          >Start Guidance Test Now</a
-        >
+
+        <a href="#" id="startTestBtn" class="btn btn-start rounded-pill">
+          Start Guidance Test Now
+        </a>
       </div>
     </section>
+
+    <script>
+      // Start Guidance Test button: redirect based on PHP session
+      (function () {
+        const btn = document.getElementById("startTestBtn");
+        if (!btn) return;
+        btn.addEventListener("click", async function (e) {
+          e.preventDefault();
+          try {
+            const res = await fetch("./php/auth/check_session.php", {
+              credentials: "include",
+            });
+            const data = await res.json();
+            if (data && data.logged_in) {
+              window.location.href = "test.html";
+            } else {
+              window.location.href = "sign_in.html";
+            }
+          } catch (err) {
+            console.error("Session check failed", err);
+            window.location.href = "sign_in.html";
+          }
+        });
+      })();
+    </script>
 
     <!-- How It Works -->
     <section class="container py-5 text-center" id="how-it-works">
       <h2>How It Works</h2>
       <div class="row g-4 justify-content-center">
         <div class="col-md-4">
-          <div class="step-card">
+          <div
+            class="step-card"
+            data-bs-toggle="modal"
+            data-bs-target="#testModal"
+            style="cursor: pointer"
+          >
             <i class="bi bi-pencil-square"></i>
             <h5>1. Test</h5>
             <p>Answer Our Questions.</p>
           </div>
         </div>
         <div class="col-md-4">
-          <div class="step-card">
+          <div
+            class="step-card"
+            data-bs-toggle="modal"
+            data-bs-target="#aiModal"
+            style="cursor: pointer"
+          >
             <i class="fas fa-brain"></i>
             <h5>2. AI Analytic</h5>
             <p>Our AI Analyzes Your Answers.</p>
           </div>
         </div>
         <div class="col-md-4">
-          <div class="step-card">
+          <div
+            class="step-card"
+            data-bs-toggle="modal"
+            data-bs-target="#resultModal"
+            style="cursor: pointer"
+          >
             <i class="bi bi-mortarboard"></i>
             <h5>3. Result</h5>
             <p>Get Your Personalized Career Path.</p>
@@ -236,14 +294,199 @@
 
     <footer>&copy; 2025 EduPathAI. All Rights Reserved.</footer>
 
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Load Navbar -->
     <script>
-      // تحميل النافبار من ملف خارجي
       fetch("navbar.html")
         .then((response) => response.text())
         .then((data) => {
           document.getElementById("navbar-placeholder").innerHTML = data;
+
+          const script = document.createElement("script");
+          script.src = "navbar.js";
+          document.body.appendChild(script);
         });
+    </script>
+
+    <script>
+      document
+        .getElementById("startTestBtn")
+        .addEventListener("click", async (e) => {
+          e.preventDefault();
+
+          try {
+            const response = await fetch("./php/auth/check_session.php", {
+              credentials: "include",
+            });
+            const data = await response.json();
+
+            if (data.logged_in) {
+              // user already logged in → go directly to test
+              window.location.href = "test.html";
+            } else {
+              // not logged in → go to login page
+              window.location.href = "sign_in.html";
+            }
+          } catch (error) {
+            // safe fallback
+            window.location.href = "sign_in.html";
+          }
+        });
+    </script>
+    <!-- Modals -->
+    <!-- modal 1 -->
+    <div class="modal fade edu-modal" id="testModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="bi bi-pencil-square me-2"></i> Guidance Test Overview
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+
+          <div class="modal-body text-start">
+            <p>
+              The guidance test consists of
+              <strong>3 structured parts</strong> designed to understand you
+              better:
+            </p>
+            <ul>
+              <li>Personality traits & behavior</li>
+              <li>Interests & skills</li>
+              <li>Academic background</li>
+            </ul>
+            <p class="text-muted">
+              ⏱ Estimated time: <strong>10–15 minutes</strong>
+            </p>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn edu-btn-secondary" data-bs-dismiss="modal">
+              Close
+            </button>
+            <button class="btn edu-btn-primary start-test-modal-btn">
+              Start Test Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- modal 2 -->
+    <div class="modal fade edu-modal" id="aiModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="fas fa-brain me-2"></i> How EduPathAI Analyzes Your
+              Answers
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+
+          <div class="modal-body text-start">
+            <p>The system analyzes the <strong>student’s answers</strong>.</p>
+
+            <ul>
+              <li>Each question is related to certain skills or traits.</li>
+              <li>These traits are connected to university majors.</li>
+              <li>The system gives scores based on the answers.</li>
+              <li>
+                At the end, it suggests the most suitable major for the student.
+              </li>
+            </ul>
+
+            <p class="mt-2">
+              EduPathAI scores answers, combines the results, and ranks majors
+              based on the best fit.
+            </p>
+
+            <p class="text-muted">⚙ This process is automated and unbiased.</p>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn edu-btn-secondary" data-bs-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- modal 3 -->
+    <div class="modal fade edu-modal" id="resultModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="bi bi-mortarboard me-2"></i> Your Personalized Result
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+
+          <div class="modal-body text-start">
+            <p>After completing the test, you will receive:</p>
+            <ul>
+              <li>Suggested university major</li>
+              <li>Confidence percentage</li>
+              <li>Detailed breakdown of your strengths</li>
+            </ul>
+
+            <div class="alert alert-info mt-3">
+              Example Result:<br />
+              <strong>Major:</strong> Graphic Design<br />
+              <strong>Confidence:</strong> 87%
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn edu-btn-primary start-test-modal-btn">
+              Start Test Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      async function handleStartTestClick(e) {
+        e.preventDefault();
+
+        try {
+          const res = await fetch("./php/auth/check_session.php", {
+            credentials: "include",
+          });
+          const data = await res.json();
+
+          if (data && data.logged_in) {
+            window.location.href = "test.html";
+          } else {
+            window.location.href = "sign_in.html";
+          }
+        } catch (err) {
+          // fallback safe
+          window.location.href = "sign_in.html";
+        }
+      }
+
+      // attach to ALL modal buttons
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".start-test-modal-btn").forEach((btn) => {
+          btn.addEventListener("click", handleStartTestClick);
+        });
+      });
     </script>
   </body>
 </html>

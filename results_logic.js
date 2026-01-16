@@ -48,8 +48,13 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then((res) => res.json())
       .then((ai) => {
-        if (!ai || ai.success !== true) {
-          console.error("AI predictor error", ai);
+        // Accept predictor responses that include a major or major_id.
+        // Some predictor outputs do not include a `success` flag.
+        if (
+          !ai ||
+          (!ai.major && (ai.major_id === undefined || ai.major_id === null))
+        ) {
+          console.error("AI predictor error or unexpected format", ai);
           return;
         }
 

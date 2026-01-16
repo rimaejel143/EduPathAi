@@ -1,6 +1,6 @@
 <?php
 $host = "localhost";
-$port = 3306;
+$port = 3307;
 $dbname = "edupathdb";
 $username = "root";
 $password = "";
@@ -11,6 +11,7 @@ try {
         $username,
         $password,
         [
+            // hon aamlna connection with mySQL database using PDO + PDO more secure 
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
         ]

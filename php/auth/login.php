@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once __DIR__ . '/../config/db.php';
-require_once __DIR__ . '/../config/config.php';
 
 header("Content-Type: application/json");
 
@@ -28,30 +27,28 @@ try {
         LIMIT 1
     ");
     $stmt->execute([$email]);
-    $user = $stmt->fetch();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$user) {
+    if (!$user || !password_verify($password, $user['password'])) {
         echo json_encode(["success" => false, "message" => "Invalid email or password"]);
         exit;
     }
 
-    if (!password_verify($password, $user['password'])) {
-        echo json_encode(["success" => false, "message" => "Invalid email or password"]);
-        exit;
-    }
-
-    // Create Session
-    $_SESSION['user_id'] = $user['user_id'];
+    // ================= CREATE SESSION =================
+    $_SESSION['user_id']   = $user['user_id'];
     $_SESSION['full_name'] = $user['full_name'];
-    $_SESSION['email'] = $user['email'];
+    $_SESSION['email']     = $user['email'];
     $_SESSION['user_type'] = $user['user_type'];
+
+    // ⭐ المهم للـ Student Dashboard
+    if ($user['user_type'] === 'student') {
+        $_SESSION['student_id']   = $user['user_id'];
+        $_SESSION['student_name'] = $user['full_name'];
+    }
 
     echo json_encode([
         "success" => true,
         "message" => "Login successful",
-        "user_id" => $user['user_id'],
-        "full_name" => $user['full_name'],
-        "email" => $user['email'],
         "user_type" => $user['user_type']
     ]);
 

@@ -15,36 +15,31 @@ try {
     // Check email exists
     $stmt = $pdo->prepare("SELECT user_id FROM users WHERE email=?");
     $stmt->execute([$email]);
-    $user = $stmt->fetch();
-
-    if (!$user) {
-        echo json_encode([
-            "success" => true,
-            "message" => "If email exists, code will be sent"
-        ]);
+    if (!$stmt->fetch()) {
+        echo json_encode(["success" => false, "message" => "Email not found"]);
         exit;
     }
 
-    // Generate 6-digit code
-    $code = rand(100000, 999999);
+    // Generate 6 digit code
+    $code = str_pad(random_int(0, 999999), 6, "0", STR_PAD_LEFT);
 
-    // Delete old codes
+    // Remove old tokens for this email
     $pdo->prepare("DELETE FROM password_reset_tokens WHERE email=?")
         ->execute([$email]);
 
-    // Insert new code
+    // Insert new token
     $stmt = $pdo->prepare("
-        INSERT INTO password_reset_tokens (email, token, expires_at, used)
-        VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 15 MINUTE), 0)
+        INSERT INTO password_reset_tokens (email, token, expires_at, used, created_at)
+        VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 15 MINUTE), 0, NOW())
     ");
     $stmt->execute([$email, $code]);
 
     echo json_encode([
         "success" => true,
-        "message" => "Reset code generated",
-        "code" => $code   // لعدم وجود SMTP – فقط للـ debugging
+        "message" => "Verification code generated",
+        "code" => $code // for testing (like you want)
     ]);
 
 } catch (Exception $e) {
-    echo json_encode(["success" => false, "message" => "Error", "error" => $e->getMessage()]);
+    echo json_encode(["success" => false, "message" => "Server error"]);
 }

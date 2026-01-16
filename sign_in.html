@@ -111,6 +111,11 @@
         .then((response) => response.text())
         .then((data) => {
           document.getElementById("navbar-placeholder").innerHTML = data;
+
+          // ✅ تشغيل navbar.js بعد إدخال الـ HTML
+          const script = document.createElement("script");
+          script.src = "navbar.js";
+          document.body.appendChild(script);
         });
     </script>
 
@@ -122,24 +127,22 @@
         fetch("./php/auth/login.php", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          credentials: "include",
           body: JSON.stringify({ email, password }),
         })
           .then((response) => response.json())
           .then((data) => {
             if (data.success) {
-              // 🔥 حفظ بيانات المستخدم في localStorage
-              localStorage.setItem("user_id", data.user_id);
-              localStorage.setItem("user_type", data.user_type);
-              localStorage.setItem("full_name", data.full_name);
-              localStorage.setItem("user_data", JSON.stringify(data.user_data));
-
-              // التوجيه حسب نوع المستخدم
+              // Session is managed server-side via PHP session.
+              // Navbar checks session via check_session.php, no localStorage needed.
               switch (data.user_type) {
                 case "admin":
-                  window.location.href = "admin_dashboard.html";
+                  window.location.href =
+                    "/SeniorEducation/SeniorEducation/php/admin/admin_dashboard.php";
                   break;
                 case "student":
-                  window.location.href = "test.html";
+                  window.location.href =
+                    "/SeniorEducation/SeniorEducation/php/student/student_dashboard.php";
                   break;
                 default:
                   window.location.href = "index.html";

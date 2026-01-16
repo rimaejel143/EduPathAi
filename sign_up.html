@@ -156,6 +156,11 @@
         .then((response) => response.text())
         .then((data) => {
           document.getElementById("navbar-placeholder").innerHTML = data;
+
+          // ✅ تشغيل navbar.js بعد إدخال الـ HTML
+          const script = document.createElement("script");
+          script.src = "navbar.js";
+          document.body.appendChild(script);
         });
     </script>
   </body>

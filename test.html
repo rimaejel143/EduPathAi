@@ -22,21 +22,19 @@
 
     <style>
       :root {
-        --primary-color: #4e7ea7; /* الأزرق الداكن */
-        --accent-color: #fdc80a; /* الأصفر الذهبي */
+        --primary-color: #4e7ea7;
+        --accent-color: #fdc80a;
       }
-      /* الأنماط الخاصة لصفحة التعليمات (Instructions) */
       .instructions-section {
         background-color: #f8f9fa;
         padding-top: 50px;
         padding-bottom: 50px;
       }
       .instruction-card {
-        border: 2px solid #4e7ea7; /* الإطار بلون الأزرق الفاتح المعتمد */
+        border: 2px solid #4e7ea7;
         border-radius: 15px;
         max-width: 900px;
       }
-      /* تعديل أنماط البطاقات لتظهر ككروت فردية في المنتصف */
       .instruction-part-card {
         background-color: white;
         border-radius: 10px;
@@ -57,7 +55,7 @@
         font-size: 0.9rem;
         color: #6c757d;
       }
-      /* زر البدء (الأحمر) */
+
       .start-test-btn {
         background-color: #dc3545;
         border-color: #dc3545;
@@ -69,27 +67,29 @@
     </style>
   </head>
   <body>
-    <nav
-      class="navbar navbar-expand-lg navbar-dark sticky-top"
-      style="background-color: #4e7ea7"
-    >
-      <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="index.html">
-          <i
-            class="fas fa-brain me-2 fs-4"
-            style="color: var(--accent-color)"
-          ></i>
-          <h5 class="d-inline-block fw-bold mb-0">
-            <span class="text-white">Edu</span
-            ><span class="fw-bold" style="color: #fdc80a">PathAI</span>
-          </h5>
+    <nav>
+      <div
+        class="top-header d-flex justify-content-between align-items-center px-5 py-2"
+      >
+        <a href="php/student/student_dashboard.php">
+          <img
+            src="/SeniorEducation/SeniorEducation/imgs/default_profile.png"
+            width="35"
+            height="35"
+            class="rounded-circle border border-light"
+            style="object-fit: cover"
+            alt="Profile"
+          />
         </a>
-        <a
-          href="index.html"
-          class="btn btn-warning"
-          style="background-color: #fdc80a; color: white"
-          >Back to Home</a
-        >
+        <div class="container ">
+    <a class="navbar-brand d-flex align-items-center" href="index.html">
+      <i class="fas fa-brain me-2 fs-4" style="color: var(--accent-color)"></i>
+      <h5 class="d-inline-block fw-bold mb-0">
+        <span class="text-white">Edu</span
+        ><span class="text-warning">PathAI</span>
+      </h5>
+    </a>
+   
       </div>
     </nav>
 
@@ -185,7 +185,7 @@
               document
                 .getElementById("startTestBtn")
                 .addEventListener("click", async () => {
-                  console.log("CLICKED!!!"); // 🔥 مهم جداً
+                  console.log("CLICKED!!!");  
 
                   let res = await fetch(
                     "./php/assessment/start_assessment.php"
@@ -202,6 +202,7 @@
                     window.location.href = "part1.html";
                   } else {
                     alert("Login required before test");
+                    window.location.href = "sign_in.html";
                   }
                 });
             </script>
@@ -211,5 +212,19 @@
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Load navbar and initialize session checking
+      fetch("navbar.html")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("navbar-placeholder").innerHTML = data;
+
+          // ✅ Load navbar.js to check session and render Profile/Login
+          const script = document.createElement("script");
+          script.src = "navbar.js";
+          document.body.appendChild(script);
+        });
+    </script>
   </body>
 </html>

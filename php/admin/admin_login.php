@@ -4,6 +4,8 @@ require_once __DIR__ . '/../config/config.php';
 
 header("Content-Type: application/json");
 
+if (session_status() === PHP_SESSION_NONE) session_start();
+
 // Only POST
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     echo json_encode([
@@ -54,9 +56,16 @@ try {
     }
 
     // Start admin session
+    // Backwards-compatible admin keys
     $_SESSION["admin_id"] = $admin["user_id"];
     $_SESSION["admin_name"] = $admin["full_name"];
     $_SESSION["admin_email"] = $admin["email"];
+
+    // Unified session keys expected by server-side checks
+    $_SESSION["user_id"] = $admin["user_id"];
+    $_SESSION["user_name"] = $admin["full_name"];
+    $_SESSION["user_email"] = $admin["email"];
+    $_SESSION["user_type"] = $admin["user_type"];
 
     echo json_encode([
         "success" => true,

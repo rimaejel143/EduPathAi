@@ -112,7 +112,23 @@
   </head>
   <body>
     <div class="top-header">
-      <div>EduPathAI</div>
+      <nav class="navbar navbar-light bg-transparent px-4">
+        <div class="ms-auto">
+          <a href="php/student/student_dashboard.php" class="me-2">
+            <img
+              src="/SeniorEducation/SeniorEducation/imgs/default_profile.png"
+              width="35"
+              height="35"
+              class="rounded-circle border border-light"
+              style="object-fit: cover"
+              alt="Profile"
+            />
+          </a>
+        </div>
+      </nav>
+      <a href="index.html" style="text-decoration: none; color: inherit"
+        >Edu<span style="color: #ff8500">PathAI</span></a
+      >
       <div id="counter">Question 51 of 60</div>
     </div>
     <div class="quiz-wrapper">
@@ -134,10 +150,69 @@
 
       <div class="nav-buttons">
         <button id="prev-btn" class="btn-prev">← Previous</button>
+        <button
+          id="saveProgressBtn"
+          class="btn btn-outline-secondary rounded-pill px-4"
+        >
+          <i class="fas fa-save me-1"></i> Save Progress
+        </button>
+
         <button id="next-btn" class="btn-next">Next Question →</button>
       </div>
     </div>
 
     <script src="part3_logic.js"></script>
+    <script>
+      // ====== SAVE PROGRESS BUTTON HANDLER (Part 3) ======
+      document
+        .getElementById("saveProgressBtn")
+        .addEventListener("click", async () => {
+          const answersArr = [];
+
+          for (let i = 0; i <= currentQuestion; i++) {
+            if (answers[i] !== null && answers[i] !== undefined) {
+              const q = questions[i];
+              if (q) {
+                answersArr.push({
+                  question_id: q.question_id,
+                  selected_option: answers[i],
+                });
+              }
+            }
+          }
+
+          if (answersArr.length === 0) {
+            alert(
+              "Please select an answer for at least one question before saving."
+            );
+            return;
+          }
+
+          const payload = {
+            part: 3,
+            current_question_number: currentQuestion + 1,
+            answers: answersArr,
+          };
+
+          try {
+            const res = await fetch("./php/student/save_progress.php", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              credentials: "include",
+              body: JSON.stringify(payload),
+            });
+
+            const data = await res.json();
+            if (data.success) {
+              alert("Progress saved successfully ✅");
+            } else {
+              alert("Failed to save progress ❌");
+            }
+          } catch (err) {
+            console.error(err);
+            alert("Server error ❌");
+          }
+        });
+    </script>
   </body>
 </html>

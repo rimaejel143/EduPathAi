@@ -1,0 +1,55 @@
+2025-12-11 07:29:58 RAW_RESPONSE: {"success":true,"major":"Software Engineering","major_id":2,"confidence":40.33}
+2025-12-11 07:29:58 DECODED: {"success":true,"major":"Software Engineering","major_id":2,"confidence":40.33}
+2025-12-11 08:52:09 RAW_RESPONSE: {"success":true,"major":"Software Engineering","major_id":2,"confidence":40.33}
+2025-12-11 08:52:09 DECODED: {"success":true,"major":"Software Engineering","major_id":2,"confidence":40.33}
+2025-12-11 09:00:22 RAW_RESPONSE: {"success":true,"major":"Software Engineering","major_id":2,"confidence":40.33}
+2025-12-11 09:00:22 DECODED: {"success":true,"major":"Software Engineering","major_id":2,"confidence":40.33}
+2025-12-15 13:19:50 RAW_RESPONSE: {"success":true,"major":"Software Engineering","major_id":2,"confidence":40.33}
+2025-12-15 13:19:50 DECODED: {"success":true,"major":"Software Engineering","major_id":2,"confidence":40.33}
+2025-12-15 13:19:58 RAW_RESPONSE: {"success":true,"major":"Software Engineering","major_id":2,"confidence":40.33}
+2025-12-15 13:19:58 DECODED: {"success":true,"major":"Software Engineering","major_id":2,"confidence":40.33}
+2025-12-15 13:20:03 RAW_RESPONSE: {"success":true,"major":"Software Engineering","major_id":2,"confidence":40.33}
+2025-12-15 13:20:03 DECODED: {"success":true,"major":"Software Engineering","major_id":2,"confidence":40.33}
+2025-12-19 09:25:48 RAW_RESPONSE: {"success":false,"message":"AI returned invalid JSON","details":"'python' is not recognized as an internal or external command,\noperable program or batch file."}
+2025-12-19 09:25:48 DECODED: {"success":false,"message":"AI returned invalid JSON","details":"'python' is not recognized as an internal or external command,\noperable program or batch file."}
+2025-12-19 09:25:48 AI_INVALID: {"success":false,"message":"AI returned invalid JSON","details":"'python' is not recognized as an internal or external command,\noperable program or batch file."}
+2025-12-19 09:25:56 RAW_RESPONSE: {"success":false,"message":"AI returned invalid JSON","details":"'python' is not recognized as an internal or external command,\noperable program or batch file."}
+2025-12-19 09:25:56 DECODED: {"success":false,"message":"AI returned invalid JSON","details":"'python' is not recognized as an internal or external command,\noperable program or batch file."}
+2025-12-19 09:25:56 AI_INVALID: {"success":false,"message":"AI returned invalid JSON","details":"'python' is not recognized as an internal or external command,\noperable program or batch file."}
+2025-12-19 09:32:40 RAW_RESPONSE: {"success":false,"message":"AI returned invalid JSON","details":"'python' is not recognized as an internal or external command,\noperable program or batch file."}
+2025-12-19 09:32:40 DECODED: {"success":false,"message":"AI returned invalid JSON","details":"'python' is not recognized as an internal or external command,\noperable program or batch file."}
+2025-12-19 09:32:40 AI_INVALID: {"success":false,"message":"AI returned invalid JSON","details":"'python' is not recognized as an internal or external command,\noperable program or batch file."}
+2025-12-19 09:35:52 RAW_RESPONSE: <br />
+<b>Warning</b>:  Undefined variable $pyCmds in <b>C:\xampp\htdocs\SeniorEducation\SeniorEducation\php\api\predict_major.php</b> on line <b>46</b><br />
+<br />
+<b>Warning</b>:  foreach() argument must be of type array|object, null given in <b>C:\xampp\htdocs\SeniorEducation\SeniorEducation\php\api\predict_major.php</b> on line <b>46</b><br />
+{"success":true,"major":"Software Engineering","major_id":2,"confidence":40.33}
+2025-12-19 09:35:52 DECODED: null
+2025-12-19 09:38:12 RAW_RESPONSE: <br />
+<b>Warning</b>:  Undefined variable $pyCmds in <b>C:\xampp\htdocs\SeniorEducation\SeniorEducation\php\api\predict_major.php</b> on line <b>46</b><br />
+<br />
+<b>Warning</b>:  foreach() argument must be of type array|object, null given in <b>C:\xampp\htdocs\SeniorEducation\SeniorEducation\php\api\predict_major.php</b> on line <b>46</b><br />
+{"success":true,"major":"Software Engineering","major_id":2,"confidence":40.33}
+2025-12-19 09:38:12 DECODED: null
+2025-12-19 09:40:06 RAW_RESPONSE: <br />
+<b>Warning</b>:  Undefined variable $pyCmds in <b>C:\xampp\htdocs\SeniorEducation\SeniorEducation\php\api\predict_major.php</b> on line <b>47</b><br />
+<br />
+<b>Warning</b>:  foreach() argument must be of type array|object, null given in <b>C:\xampp\htdocs\SeniorEducation\SeniorEducation\php\api\predict_major.php</b> on line <b>47</b><br />
+{"success":true,"major":"Software Engineering","major_id":2,"confidence":40.33}
+2025-12-19 09:40:06 DECODED: null
+2025-12-19 09:40:15 RAW_RESPONSE: <br />
+<b>Warning</b>:  Undefined variable $pyCmds in <b>C:\xampp\htdocs\SeniorEducation\SeniorEducation\php\api\predict_major.php</b> on line <b>47</b><br />
+<br />
+<b>Warning</b>:  foreach() argument must be of type array|object, null given in <b>C:\xampp\htdocs\SeniorEducation\SeniorEducation\php\api\predict_major.php</b> on line <b>47</b><br />
+{"success":true,"major":"Software Engineering","major_id":2,"confidence":40.33}
+2025-12-19 09:40:15 DECODED: null
+2025-12-19 09:41:30 RAW_RESPONSE: <br />
+<b>Warning</b>:  Undefined variable $pyCmds in <b>C:\xampp\htdocs\SeniorEducation\SeniorEducation\php\api\predict_major.php</b> on line <b>47</b><br />
+<br />
+<b>Warning</b>:  foreach() argument must be of type array|object, null given in <b>C:\xampp\htdocs\SeniorEducation\SeniorEducation\php\api\predict_major.php</b> on line <b>47</b><br />
+{"success":true,"major":"Software Engineering","major_id":2,"confidence":40.33}
+2025-12-19 09:41:30 DECODED: null
+2025-12-19 09:43:32 RAW_RESPONSE: {"success":true,"major":"Software Engineering","major_id":2,"confidence":40.33}
+2025-12-19 09:43:32 DECODED: {"success":true,"major":"Software Engineering","major_id":2,"confidence":40.33}
+2025-12-19 09:43:49 RAW_RESPONSE: {"success":true,"major":"Software Engineering","major_id":2,"confidence":40.33}
+2025-12-19 09:43:49 DECODED: {"success":true,"major":"Software Engineering","major_id":2,"confidence":40.33}

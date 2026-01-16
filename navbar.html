@@ -1,9 +1,10 @@
 <style>
   :root {
-    --primary-color: #4e7ea7; /* الأزرق الداكن */
-    --accent-color: #fdc80a; /* الأصفر الذهبي */
+    --primary-color: #4e7ea7;
+    --accent-color: #fdc80a;
   }
 </style>
+
 <nav class="navbar navbar-expand-lg navbar-dark custom-nav sticky-top">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center" href="index.html">
@@ -28,7 +29,9 @@
 
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mx-auto">
-        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="index.html#how-it-works">How It Works</a>
         </li>
@@ -40,9 +43,12 @@
         </li>
       </ul>
 
-      <a href="sign_in.html" class="btn btn-warning custom-cta-btn fw-bold"
-        >LOGIN</a
-      >
+      <div id="auth-area">
+        <a href="sign_in.html" class="btn btn-warning custom-cta-btn fw-bold">
+          LOGIN
+        </a>
+      </div>
     </div>
   </div>
+  <script src="navbar.js"></script>
 </nav>

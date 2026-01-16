@@ -1,7 +1,11 @@
 <?php
+
 require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/admin_auth_check.php';
 
 header("Content-Type: application/json");
+
+ensure_admin();
 
 $user_id = intval($_GET["user_id"] ?? 0);
 

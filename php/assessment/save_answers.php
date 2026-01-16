@@ -25,6 +25,9 @@ $user_id = $_SESSION['user_id'] ?? 0;
 $part = intval($data["part"] ?? 0);
 $answers = $data["answers"] ?? [];
 
+// Debug: log incoming payload and session info
+@file_put_contents(__DIR__ . "/log_save_answers.txt", date("Y-m-d H:i:s") . " INCOMING payload: " . json_encode($data) . " USER=" . intval($user_id) . " PART=" . intval($part) . "\n", FILE_APPEND);
+
 if (!$user_id || !$part || empty($answers)) {
     echo json_encode([
         "success" => false,
@@ -51,33 +54,35 @@ try {
     }
 
     $student_assessment_id = $assessment["student_assessment_id"];
+    @file_put_contents(__DIR__ . "/log_save_answers.txt", date("Y-m-d H:i:s") . " ACTIVE assessment_id=" . intval($student_assessment_id) . " for user=" . intval($user_id) . "\n", FILE_APPEND);
 
     foreach ($answers as $ans) {
         $question_id = intval($ans["question_id"]);
         $selected = intval($ans["selected"]);
 
-        // 🔥 FIX HERE!!!
-        $stmt = $pdo->prepare("
+                $stmt = $pdo->prepare("
             SELECT selected_answer_id FROM selectedanswers
             WHERE user_id=? AND question_id=? AND student_assessment_id=?
         ");
         $stmt->execute([$user_id, $question_id, $student_assessment_id]);
 
-        if ($stmt->rowCount() > 0) {
+            if ($stmt->rowCount() > 0) {
 
-            $pdo->prepare("
-                UPDATE selectedanswers 
-                SET selected_option=?, updated_at=NOW()
-                WHERE user_id=? AND question_id=? AND student_assessment_id=?
-            ")->execute([$selected, $user_id, $question_id, $student_assessment_id]);
+                $pdo->prepare("
+                    UPDATE selectedanswers 
+                    SET selected_option=?, updated_at=NOW()
+                    WHERE user_id=? AND question_id=? AND student_assessment_id=?
+                ")->execute([$selected, $user_id, $question_id, $student_assessment_id]);
+                @file_put_contents(__DIR__ . "/log_save_answers.txt", date("Y-m-d H:i:s") . " UPDATED answer: q=" . intval($question_id) . " sel=" . intval($selected) . "\n", FILE_APPEND);
 
-        } else {
+            } else {
 
-            $pdo->prepare("
-                INSERT INTO selectedanswers (user_id, student_assessment_id, question_id, selected_option, created_at)
-                VALUES (?, ?, ?, ?, NOW())
-            ")->execute([$user_id, $student_assessment_id, $question_id, $selected]);
-        }
+                $pdo->prepare("
+                    INSERT INTO selectedanswers (user_id, student_assessment_id, question_id, selected_option, created_at)
+                    VALUES (?, ?, ?, ?, NOW())
+                ")->execute([$user_id, $student_assessment_id, $question_id, $selected]);
+                @file_put_contents(__DIR__ . "/log_save_answers.txt", date("Y-m-d H:i:s") . " INSERTED answer: q=" . intval($question_id) . " sel=" . intval($selected) . "\n", FILE_APPEND);
+            }
     }
 
     echo json_encode([

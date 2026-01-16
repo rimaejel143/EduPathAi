@@ -1,0 +1,81 @@
+2025-12-11 07:29:56 LATEST_ASSESSMENT: user=7 assessment_id=25
+2025-12-11 07:29:56 RAW_ROWS_COUNT: 3 rows=[{"part_number":1,"total_score":"305.00"},{"part_number":2,"total_score":"1120.00"},{"part_number":3,"total_score":"26.00"}]
+2025-12-11 07:29:56 SENDING_TO_AI: scores=[305,1120,26]
+2025-12-11 07:29:58 FINAL_RESULT_SAVED: assessment=25 major=Software Engineering major_id=2 confidence=40.33
+2025-12-11 07:29:58 APPEND_DISABLED: automatic dataset appends are disabled.
+2025-12-11 08:51:40 LATEST_ASSESSMENT: user=7 assessment_id=25
+2025-12-11 08:51:40 RAW_ROWS_COUNT: 3 rows=[{"part_number":1,"total_score":"305.00"},{"part_number":2,"total_score":"1120.00"},{"part_number":3,"total_score":"26.00"}]
+2025-12-11 08:51:40 SENDING_TO_AI: scores=[305,1120,26]
+2025-12-11 08:52:03 LATEST_ASSESSMENT: user=7 assessment_id=25
+2025-12-11 08:52:03 RAW_ROWS_COUNT: 3 rows=[{"part_number":1,"total_score":"305.00"},{"part_number":2,"total_score":"1120.00"},{"part_number":3,"total_score":"26.00"}]
+2025-12-11 08:52:03 SENDING_TO_AI: scores=[305,1120,26]
+2025-12-11 08:52:09 FINAL_RESULT_SAVED: assessment=25 major=Software Engineering major_id=2 confidence=40.33
+2025-12-11 08:52:09 APPEND_DISABLED: automatic dataset appends are disabled.
+2025-12-11 09:00:20 LATEST_ASSESSMENT: user=7 assessment_id=26
+2025-12-11 09:00:20 RAW_ROWS_COUNT: 3 rows=[{"part_number":1,"total_score":"345.00"},{"part_number":2,"total_score":"1360.00"},{"part_number":3,"total_score":"31.00"}]
+2025-12-11 09:00:20 SENDING_TO_AI: scores=[345,1360,31]
+2025-12-11 09:00:22 FINAL_RESULT_SAVED: assessment=26 major=Software Engineering major_id=2 confidence=40.33
+2025-12-11 09:00:22 APPEND_DISABLED: automatic dataset appends are disabled.
+2025-12-15 13:19:23 LATEST_ASSESSMENT: user=1 assessment_id=33
+2025-12-15 13:19:23 RAW_ROWS_COUNT: 3 rows=[{"part_number":1,"total_score":"350.00"},{"part_number":2,"total_score":"1320.00"},{"part_number":3,"total_score":"28.00"}]
+2025-12-15 13:19:23 SENDING_TO_AI: scores=[350,1320,28]
+2025-12-15 13:19:48 LATEST_ASSESSMENT: user=1 assessment_id=33
+2025-12-15 13:19:48 RAW_ROWS_COUNT: 3 rows=[{"part_number":1,"total_score":"350.00"},{"part_number":2,"total_score":"1320.00"},{"part_number":3,"total_score":"28.00"}]
+2025-12-15 13:19:48 SENDING_TO_AI: scores=[350,1320,28]
+2025-12-15 13:19:50 FINAL_RESULT_SAVED: assessment=33 major=Software Engineering major_id=2 confidence=40.33
+2025-12-15 13:19:50 APPEND_DISABLED: automatic dataset appends are disabled.
+2025-12-15 13:19:57 LATEST_ASSESSMENT: user=1 assessment_id=33
+2025-12-15 13:19:57 RAW_ROWS_COUNT: 3 rows=[{"part_number":1,"total_score":"350.00"},{"part_number":2,"total_score":"1320.00"},{"part_number":3,"total_score":"28.00"}]
+2025-12-15 13:19:57 SENDING_TO_AI: scores=[350,1320,28]
+2025-12-15 13:19:58 FINAL_RESULT_SAVED: assessment=33 major=Software Engineering major_id=2 confidence=40.33
+2025-12-15 13:19:58 APPEND_DISABLED: automatic dataset appends are disabled.
+2025-12-15 13:20:01 LATEST_ASSESSMENT: user=1 assessment_id=33
+2025-12-15 13:20:01 RAW_ROWS_COUNT: 3 rows=[{"part_number":1,"total_score":"350.00"},{"part_number":2,"total_score":"1320.00"},{"part_number":3,"total_score":"28.00"}]
+2025-12-15 13:20:01 SENDING_TO_AI: scores=[350,1320,28]
+2025-12-15 13:20:03 FINAL_RESULT_SAVED: assessment=33 major=Software Engineering major_id=2 confidence=40.33
+2025-12-15 13:20:03 APPEND_DISABLED: automatic dataset appends are disabled.
+2025-12-18 07:28:40 LATEST_ASSESSMENT: user=1 assessment_id=38
+2025-12-18 07:28:40 RAW_ROWS_COUNT: 1 rows=[{"part_number":1,"total_score":"360.00"}]
+2025-12-18 07:28:43 LATEST_ASSESSMENT: user=1 assessment_id=38
+2025-12-18 07:28:43 RAW_ROWS_COUNT: 1 rows=[{"part_number":1,"total_score":"360.00"}]
+2025-12-18 07:28:44 LATEST_ASSESSMENT: user=1 assessment_id=38
+2025-12-18 07:28:44 RAW_ROWS_COUNT: 1 rows=[{"part_number":1,"total_score":"360.00"}]
+2025-12-18 07:28:51 LATEST_ASSESSMENT: user=1 assessment_id=38
+2025-12-18 07:28:51 RAW_ROWS_COUNT: 1 rows=[{"part_number":1,"total_score":"360.00"}]
+2025-12-19 09:25:48 LATEST_ASSESSMENT: user=1 assessment_id=11
+2025-12-19 09:25:48 RAW_ROWS_COUNT: 3 rows=[{"part_number":1,"total_score":"320.00"},{"part_number":2,"total_score":"1090.00"},{"part_number":3,"total_score":"24.00"}]
+2025-12-19 09:25:48 SENDING_TO_AI: scores=[320,1090,24]
+2025-12-19 09:25:56 LATEST_ASSESSMENT: user=1 assessment_id=11
+2025-12-19 09:25:56 RAW_ROWS_COUNT: 3 rows=[{"part_number":1,"total_score":"320.00"},{"part_number":2,"total_score":"1090.00"},{"part_number":3,"total_score":"24.00"}]
+2025-12-19 09:25:56 SENDING_TO_AI: scores=[320,1090,24]
+2025-12-19 09:32:40 LATEST_ASSESSMENT: user=1 assessment_id=11
+2025-12-19 09:32:40 RAW_ROWS_COUNT: 3 rows=[{"part_number":1,"total_score":"320.00"},{"part_number":2,"total_score":"1090.00"},{"part_number":3,"total_score":"24.00"}]
+2025-12-19 09:32:40 SENDING_TO_AI: scores=[320,1090,24]
+2025-12-19 09:35:11 LATEST_ASSESSMENT: user=1 assessment_id=11
+2025-12-19 09:35:11 RAW_ROWS_COUNT: 3 rows=[{"part_number":1,"total_score":"320.00"},{"part_number":2,"total_score":"1090.00"},{"part_number":3,"total_score":"24.00"}]
+2025-12-19 09:35:11 SENDING_TO_AI: scores=[320,1090,24]
+2025-12-19 09:35:51 LATEST_ASSESSMENT: user=1 assessment_id=11
+2025-12-19 09:35:51 RAW_ROWS_COUNT: 3 rows=[{"part_number":1,"total_score":"320.00"},{"part_number":2,"total_score":"1090.00"},{"part_number":3,"total_score":"24.00"}]
+2025-12-19 09:35:51 SENDING_TO_AI: scores=[320,1090,24]
+2025-12-19 09:38:11 LATEST_ASSESSMENT: user=1 assessment_id=11
+2025-12-19 09:38:11 RAW_ROWS_COUNT: 3 rows=[{"part_number":1,"total_score":"320.00"},{"part_number":2,"total_score":"1090.00"},{"part_number":3,"total_score":"24.00"}]
+2025-12-19 09:38:11 SENDING_TO_AI: scores=[320,1090,24]
+2025-12-19 09:40:05 LATEST_ASSESSMENT: user=1 assessment_id=11
+2025-12-19 09:40:05 RAW_ROWS_COUNT: 3 rows=[{"part_number":1,"total_score":"320.00"},{"part_number":2,"total_score":"1090.00"},{"part_number":3,"total_score":"24.00"}]
+2025-12-19 09:40:05 SENDING_TO_AI: scores=[320,1090,24]
+2025-12-19 09:40:14 LATEST_ASSESSMENT: user=1 assessment_id=11
+2025-12-19 09:40:14 RAW_ROWS_COUNT: 3 rows=[{"part_number":1,"total_score":"320.00"},{"part_number":2,"total_score":"1090.00"},{"part_number":3,"total_score":"24.00"}]
+2025-12-19 09:40:14 SENDING_TO_AI: scores=[320,1090,24]
+2025-12-19 09:41:28 LATEST_ASSESSMENT: user=1 assessment_id=11
+2025-12-19 09:41:28 RAW_ROWS_COUNT: 3 rows=[{"part_number":1,"total_score":"320.00"},{"part_number":2,"total_score":"1090.00"},{"part_number":3,"total_score":"24.00"}]
+2025-12-19 09:41:28 SENDING_TO_AI: scores=[320,1090,24]
+2025-12-19 09:43:31 LATEST_ASSESSMENT: user=1 assessment_id=11
+2025-12-19 09:43:31 RAW_ROWS_COUNT: 3 rows=[{"part_number":1,"total_score":"320.00"},{"part_number":2,"total_score":"1090.00"},{"part_number":3,"total_score":"24.00"}]
+2025-12-19 09:43:31 SENDING_TO_AI: scores=[320,1090,24]
+2025-12-19 09:43:32 FINAL_RESULT_SAVED: assessment=11 major=Software Engineering major_id=2 confidence=40.33
+2025-12-19 09:43:32 APPEND_DISABLED: automatic dataset appends are disabled.
+2025-12-19 09:43:48 LATEST_ASSESSMENT: user=1 assessment_id=11
+2025-12-19 09:43:48 RAW_ROWS_COUNT: 3 rows=[{"part_number":1,"total_score":"320.00"},{"part_number":2,"total_score":"1090.00"},{"part_number":3,"total_score":"24.00"}]
+2025-12-19 09:43:48 SENDING_TO_AI: scores=[320,1090,24]
+2025-12-19 09:43:49 FINAL_RESULT_SAVED: assessment=11 major=Software Engineering major_id=2 confidence=40.33
+2025-12-19 09:43:49 APPEND_DISABLED: automatic dataset appends are disabled.
